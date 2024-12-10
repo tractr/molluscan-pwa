@@ -41,6 +41,13 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --indicator-noData: #f5f5f5;
+    --indicator-bad: #e00523;
+    --indicator-poor: #ee7a25;
+    --indicator-average: #fac02e;
+    --indicator-good: #72b729;
+    --indicator-excellent: #1272be;
+    --indicator-unknown: #808080;
   }
 
   .dark {

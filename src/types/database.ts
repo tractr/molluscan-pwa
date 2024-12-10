@@ -256,7 +256,7 @@ export type Database = {
         start_date: string;
         period_of_time: number;
         valvo_id: string;
-      }) => Promise<GeneralIndicator[]>;
+      }) => Promise<Database['public']['CompositeTypes']['general_indicator'][]>;
       get_general_indicator2: (args: {
         start_date: string;
         period_of_time: number;
@@ -266,13 +266,33 @@ export type Database = {
         start_date: string;
         period_of_time: number;
         valvo_id: string;
-      }) => Promise<GeneralIndicatorLight[]>;
+      }) => Promise<Database['public']['CompositeTypes']['general_indicator_light'][]>;
     };
     Enums: {
       [_ in never]: never;
     };
     CompositeTypes: {
-      [_ in never]: never;
+      general_indicator: {
+        day: string | null;
+        general_indicator: number | null;
+        general_value: number | null;
+        general: Json | null;
+        mortality: Json | null;
+        agitation: Json | null;
+        agitation_during_opening_period: Json | null;
+        valve_closing_duration: Json | null;
+        valve_opening_amplitude: Json | null;
+        night_and_day_rhythm: Json | null;
+        tidal_rhythm: Json | null;
+        growth: Json | null;
+        max_amplitude: Json | null;
+        spawning: Json | null;
+      };
+      general_indicator_light: {
+        day: string | null;
+        general_indicator: number | null;
+        general_value: number | null;
+      };
     };
   };
 };
@@ -368,17 +388,20 @@ export type CompositeTypes<
 
 // Types pour les indicateurs
 export interface GeneralIndicator {
-  day: string; // date
-  indicator: number;
-  agitation_indicator: number;
-  growth_indicator: number;
-  max_amplitude_indicator: number;
-  mortality_indicator: number;
-  night_and_day_rhythm_indicator: number;
-  spawning_indicator: number;
-  tidal_rhythm_indicator: number;
-  valve_closing_duration_indicator: number;
-  valve_opening_amplitude_indicator: number;
+  day: string | null;
+  general_indicator: number | null;
+  general_value: number | null;
+  general: Json | null;
+  mortality: Json | null;
+  agitation: Json | null;
+  agitation_during_opening_period: Json | null;
+  valve_closing_duration: Json | null;
+  valve_opening_amplitude: Json | null;
+  night_and_day_rhythm: Json | null;
+  tidal_rhythm: Json | null;
+  growth: Json | null;
+  max_amplitude: Json | null;
+  spawning: Json | null;
 }
 
 export interface GeneralIndicatorLight {
