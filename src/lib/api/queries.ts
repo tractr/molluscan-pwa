@@ -124,3 +124,15 @@ export function useDeleteTodo() {
     },
   });
 }
+
+export function useValvoGeography(valvoId: string | null) {
+  return useQuery({
+    queryKey: ['valvoGeography', valvoId],
+    queryFn: async () => {
+      if (!valvoId) return null;
+      const valvos = await getValvosGeography();
+      return valvos.find(valvo => valvo.id === valvoId) || null;
+    },
+    enabled: !!valvoId,
+  });
+}

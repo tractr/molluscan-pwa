@@ -8,6 +8,15 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     '!./node_modules',
   ],
+  safelist: [
+    'bg-indicator-noData',
+    'bg-indicator-bad',
+    'bg-indicator-poor',
+    'bg-indicator-average',
+    'bg-indicator-good',
+    'bg-indicator-excellent',
+    'bg-indicator-unknown',
+  ],
   theme: {
     extend: {
       colors: {

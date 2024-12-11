@@ -1,32 +1,23 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { useIndicator } from '@/hooks/use-indicator';
+import { indicatorColorClasses, useIndicator } from '@/hooks/use-indicator';
 import { cn } from '@/lib/utils';
 import { IndicatorGeneralDetails } from '@/types/valvo';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 interface ValvoCardProps {
+  valvoId: string;
   valvo: IndicatorGeneralDetails | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-const indicatorColorClasses = {
-  noData: 'bg-[var(--indicator-noData)]',
-  bad: 'bg-[var(--indicator-bad)]',
-  poor: 'bg-[var(--indicator-poor)]',
-  average: 'bg-[var(--indicator-average)]',
-  good: 'bg-[var(--indicator-good)]',
-  excellent: 'bg-[var(--indicator-excellent)]',
-  unknown: 'bg-[var(--indicator-unknown)]',
-} as const;
-
-export function ValvoCard({ valvo, open, onOpenChange }: ValvoCardProps) {
-  console.log('ola');
-  console.log(valvo);
+export function ValvoCard({ valvoId, valvo, open, onOpenChange }: ValvoCardProps) {
+  const router = useRouter();
   const { translatedTitle, color } = useIndicator(
     valvo?.general_indicator || 1,
     valvo?.general_value || 1
   );
-  console.log(color);
   if (!valvo) return null;
 
   return (
@@ -50,6 +41,9 @@ export function ValvoCard({ valvo, open, onOpenChange }: ValvoCardProps) {
               {valvo.location.name} - {valvo.location.city}
             </p>
           </div>
+          <Button variant="secondary" onClick={() => router.push(`/valvo/${valvoId}`)}>
+            Voir les détails
+          </Button>
         </div>
       </DialogContent>
     </Dialog>

@@ -12,7 +12,18 @@ export interface IndicatorProperties {
   label: string;
   color: string;
   imageUrl: string;
+  bgImageUrl: string;
 }
+
+export const indicatorColorClasses = {
+  noData: 'bg-indicator-noData',
+  bad: 'bg-indicator-bad',
+  poor: 'bg-indicator-poor',
+  average: 'bg-indicator-average',
+  good: 'bg-indicator-good',
+  excellent: 'bg-indicator-excellent',
+  unknown: 'bg-indicator-unknown',
+} as const;
 
 export const INDICATOR_COLORS: Record<IndicatorLevel, string> = {
   0: 'noData',
@@ -41,8 +52,10 @@ export function getIndicatorProperties(level: number, value?: number): Indicator
   return {
     title: `indicators.${state}.title`,
     label: `indicators.${state}.label`,
-    color: state === 'noData' ? INDICATOR_COLORS[0] : INDICATOR_COLORS[normalizedLevel],
-    imageUrl: `/images/indicators/${state}.svg`,
+    //color: state === 'noData' ? `${INDICATOR_COLORS[0]}` : `${INDICATOR_COLORS[normalizedLevel]}`,
+    color: state,
+    imageUrl: `/images/${state}.png`,
+    bgImageUrl: `/images/bg-mer-${state}.svg`,
   };
 }
 

@@ -69,6 +69,7 @@ const GoogleMapComponent = () => {
         ))}
       </GoogleMap>
       <ValvoCard
+        valvoId={selectedValvoId || ''}
         valvo={selectedValvoWithIndicator || null}
         open={isValvoCardOpen}
         onOpenChange={setIsValvoCardOpen}
