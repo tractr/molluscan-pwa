@@ -57,3 +57,25 @@ export async function getGeneralIndicator({
   if (error) throw error;
   return data[0];
 }
+
+export async function getIndicatorHistory({
+  params,
+  done,
+}: {
+  params: { valvo_id: string; period_of_time?: number; start_date?: Date };
+  done?: boolean;
+}): Promise<GeneralIndicator[] | null> {
+  let query = supabaseClient.rpc('get_general_indicator', {
+    valvo_id: params.valvo_id,
+    period_of_time: params.period_of_time || 1,
+    start_date: params.start_date || new Date(),
+  });
+
+  if (done !== undefined) {
+    query = query.eq('done', done);
+  }
+
+  const { data, error } = await query;
+  if (error) throw error;
+  return data;
+}

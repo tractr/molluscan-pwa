@@ -1,19 +1,5 @@
+import { WeatherData, Location } from '@/types/weather';
 import { useEffect, useState } from 'react';
-
-interface WeatherData {
-  avgtemp_c: number;
-  condition: {
-    text: string;
-    icon: string;
-  };
-  maxwind_kph: number;
-  avghumidity: number;
-}
-
-interface Location {
-  lat: number;
-  lng: number;
-}
 
 export function useWeather(location: Location) {
   const [weather, setWeather] = useState<WeatherData | null>(null);
