@@ -33,9 +33,9 @@ export function IndicatorHeader({
   waterTemperature,
 }: IndicatorHeaderProps) {
   return (
-    <div className="container max-w-4xl pt-24 md:pt-32 pb-4 md:pb-8 px-4 mx-auto mt-5 relative aspect-[3098/1729] overflow-hidden">
+    <div className="container max-w-4xl pt-20 md:pt-32 pb-4 md:pb-8 px-4 mx-auto mt-5 relative md:aspect-[3098/1729] overflow-hidden">
       <div
-        className="absolute inset-0 bg-contain bg-center bg-no-repeat -mx-4 -z-10"
+        className="absolute inset-0 bg-cover md:bg-contain bg-top md:bg-center bg-no-repeat -mx-4 -z-10"
         style={{ backgroundImage: `url(${bgImageUrl})` }}
       />
       <Card className="border-white border-2 shadow-2xl backdrop-blur-sm bg-white/90 overflow-hidden">
@@ -57,7 +57,7 @@ export function IndicatorHeader({
 
           <div className="flex flex-col items-center md:w-1/3 py-6">
             <div className="flex justify-center items-center">
-              <span className="text-5xl md:text-6xl font-bold">{value.toFixed(2)}</span>
+              <span className="text-2xl md:text-6xl font-bold">{value.toFixed(2)}</span>
             </div>
             <TooltipProvider>
               <Tooltip>
@@ -80,7 +80,7 @@ export function IndicatorHeader({
           <div className="flex flex-row items-center justify-between gap-2">
             {currentWeather && (
               <>
-                <div className="flex items-center gap-2 rounded-lg p-2">
+                <div className="flex flex-col md:flex-row items-center gap-2 rounded-lg p-2">
                   <Image
                     src={`https:${currentWeather.condition.icon}`}
                     alt={currentWeather.condition.text}
@@ -99,14 +99,14 @@ export function IndicatorHeader({
                   className="h-full min-h-12 bg-slate-300"
                 />
 
-                <div className="flex items-center gap-2 p-2">
+                <div className="flex flex-col md:flex-row items-center gap-2 p-2">
                   <Wind className="w-8 h-8 text-blue-500" />
                   <span className="text-lg font-medium">{currentWeather.maxwind_kph} km/h</span>
                 </div>
 
-                <div className="flex items-center gap-2 p-2">
+                <div className="flex flex-col md:flex-row items-center gap-2 p-2">
                   <Waves className="w-8 h-8 text-cyan-500" />
-                  <span className="text-lg font-medium text-muted-foreground">
+                  <span className="text-lg font-medium">
                     {waterTemperature ? (
                       `${waterTemperature}°C`
                     ) : (

@@ -7,7 +7,7 @@ interface IndicatorGridProps {
 
 export function IndicatorGrid({ indicators }: IndicatorGridProps) {
   return (
-    <div className="container max-w-4xl mx-auto relative">
+    <div className="container max-w-4xl mx-auto relative mt-10">
       <h2 className="text-xl font-bold text-center uppercase">Indicateurs physiologiques</h2>
       <div className="grid grid-cols-2 gap-4 p-4">
         {indicators.mortality && (

@@ -31,7 +31,7 @@ export default function ValvoPage() {
     valvo?.general_value || 1
   );
 
-  const { data: weatherHistory, isLoading: isLoadingWeather } = useWeatherHistory(id as string);
+  const { data: weatherHistory, isLoading: isLoadingWeather } = useWeatherHistory(id as string, 7);
   const { data: indicatorHistory, isLoading: isLoadingIndicator } = useValvoIndicatorHistory(
     id as string,
     parseInt(period)

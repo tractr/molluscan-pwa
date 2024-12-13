@@ -210,7 +210,7 @@ export function useWeatherHistory(valvoId: string | null, daysCount: number = 5)
         general_value: indicators[index]?.general_value ?? 1,
         indicator: indicators[index]?.general_indicator ?? 1,
         weather: weatherData[index],
-        waterTemp: null, // À implémenter plus tard
+        waterTemp: indicators[index]?.water_temperature?.water_temperature_max ?? null,
       }));
     },
     enabled: !!valvoId && !!valvoGeo,
