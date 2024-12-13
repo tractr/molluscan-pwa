@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { Menu } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 export const Header = () => {
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
@@ -37,9 +39,11 @@ export const Header = () => {
           <Image
             src="/images/logo-molluscan.png"
             alt="Logo"
-            width={40}
+            width={120}
             height={40}
-            className="h-8 w-auto"
+            className="w-auto h-10 hover:cursor-pointer"
+            onClick={() => router.push('/')}
+            loading="eager"
           />
         </div>
 
