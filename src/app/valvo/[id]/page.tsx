@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { IndicatorHeader } from '@/components/IndicatorHeader';
 import { WeatherHistory } from '@/components/WeatherHistory';
 import { IndicatorGrid } from '@/components/IndicatorGrid';
-import { StatisticsCard } from '@/components/StatisticsCard';
+import { Statistics } from '@/components/Statistics';
 
 export default function ValvoPage() {
   const { id } = useParams();
@@ -37,26 +37,26 @@ export default function ValvoPage() {
     parseInt(period)
   );
 
-  if (isLoading || isLoadingGeo || isLoadingWeather || isLoadingIndicator)
+  if (isLoading || isLoadingGeo)
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center min-h-screen">
         <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     );
   if (error || geoError)
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center min-h-screen">
         <p>Error: {error?.message || geoError?.message}</p>
       </div>
     );
-  if (!valvo || !valvoGeo || !weatherHistory || !indicatorHistory)
+  if (!valvo || !valvoGeo)
     return (
-      <div className="flex justify-center items-center h-full">
+      <div className="flex justify-center items-center min-h-screen">
         <p>Valvo non trouvé</p>
       </div>
     );
 
-  const currentWeather = weatherHistory[weatherHistory.length - 1]?.weather;
+  const currentWeather = weatherHistory?.[weatherHistory.length - 1]?.weather;
 
   return (
     <>
@@ -70,12 +70,24 @@ export default function ValvoPage() {
         waterTemperature={valvo.water_temperature?.water_temperature_max || undefined}
       />
 
-      <WeatherHistory weatherHistory={weatherHistory} />
+      {isLoadingWeather ? (
+        <div className="flex justify-center items-center py-8">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      ) : (
+        <WeatherHistory weatherHistory={weatherHistory || []} />
+      )}
 
       <IndicatorGrid indicators={valvo} />
 
-      <div className="container max-w-4xl mx-auto relative mb-8">
-        <StatisticsCard data={indicatorHistory} period={period} onPeriodChange={setPeriod} />
+      <div className="container max-w-4xl mx-auto relative mb-8 mt-10">
+        {isLoadingIndicator ? (
+          <div className="flex justify-center items-center py-8">
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          </div>
+        ) : (
+          <Statistics data={indicatorHistory || []} period={period} onPeriodChange={setPeriod} />
+        )}
       </div>
     </>
   );
