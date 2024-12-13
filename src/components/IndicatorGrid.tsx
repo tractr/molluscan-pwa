@@ -62,8 +62,8 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
         {indicators.night_and_day_rhythm && (
           <IndicatorCard
             value={indicators.night_and_day_rhythm.value}
-            label="Rythme jour/nuit"
-            tooltip="Rythme jour/nuit"
+            label="NDR"
+            tooltip="Night/Day Rhythm"
             unit="%"
             indicator={indicators.night_and_day_rhythm.indicator}
             reason={indicators.night_and_day_rhythm.reason}
@@ -72,8 +72,8 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
         {indicators.tidal_rhythm && (
           <IndicatorCard
             value={indicators.tidal_rhythm.value}
-            label="Rythme des marées"
-            tooltip="Rythme des marées"
+            label="TID"
+            tooltip="Tidal Rhythm"
             unit="%"
             indicator={indicators.tidal_rhythm.indicator}
             reason={indicators.tidal_rhythm.reason}
@@ -82,8 +82,8 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
         {indicators.growth && (
           <IndicatorCard
             value={indicators.growth.value}
-            label="Croissance"
-            tooltip="Croissance"
+            label="GRO"
+            tooltip="Growth"
             unit="mm"
             indicator={indicators.growth.indicator}
             reason={indicators.growth.reason}
@@ -92,8 +92,8 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
         {indicators.max_amplitude && (
           <IndicatorCard
             value={indicators.max_amplitude.value}
-            label="Amplitude maximale"
-            tooltip="Amplitude maximale"
+            label="MA"
+            tooltip="Maximal Amplitude"
             unit="mm"
             indicator={indicators.max_amplitude.indicator}
             reason={indicators.max_amplitude.reason}
