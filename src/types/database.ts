@@ -1877,6 +1877,14 @@ interface Indicator {
   indicator?: number;
 }
 
+interface WaterTemperature {
+  day?: string;
+  water_temperature_min?: number;
+  water_temperature_max?: number;
+  indicator?: number;
+  reason?: string;
+}
+
 export interface GeneralIndicator {
   day: string | null;
   general_indicator: number | null;
@@ -1892,6 +1900,7 @@ export interface GeneralIndicator {
   growth: Indicator | null;
   max_amplitude: Indicator | null;
   spawning: Indicator | null;
+  water_temperature: WaterTemperature | null;
 }
 
 export interface GeneralIndicatorLight {

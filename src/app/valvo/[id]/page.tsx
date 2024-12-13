@@ -67,6 +67,7 @@ export default function ValvoPage() {
         bgImageUrl={bgImageUrl}
         translatedTitle={translatedTitle}
         currentWeather={currentWeather || undefined}
+        waterTemperature={valvo.water_temperature?.water_temperature_max || undefined}
       />
 
       <WeatherHistory weatherHistory={weatherHistory} />
