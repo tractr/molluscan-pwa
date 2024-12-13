@@ -1114,6 +1114,7 @@ export type Database = {
           agitation_weight: number;
           agitation_yellow_threshold: number;
           city: string | null;
+          code: string | null;
           created_at: string;
           description: string | null;
           general_green_threshold: number;
@@ -1173,6 +1174,7 @@ export type Database = {
           agitation_weight?: number;
           agitation_yellow_threshold?: number;
           city?: string | null;
+          code?: string | null;
           created_at?: string;
           description?: string | null;
           general_green_threshold?: number;
@@ -1232,6 +1234,7 @@ export type Database = {
           agitation_weight?: number;
           agitation_yellow_threshold?: number;
           city?: string | null;
+          code?: string | null;
           created_at?: string;
           description?: string | null;
           general_green_threshold?: number;
@@ -1297,7 +1300,8 @@ export type Database = {
           created_at: string;
           description: string;
           id: string;
-          image: string;
+          image_bucket: string;
+          image_path: string;
           sort: number | null;
           valvo: string;
         };
@@ -1305,7 +1309,8 @@ export type Database = {
           created_at?: string;
           description: string;
           id?: string;
-          image: string;
+          image_bucket: string;
+          image_path: string;
           sort?: number | null;
           valvo: string;
         };
@@ -1313,14 +1318,15 @@ export type Database = {
           created_at?: string;
           description?: string;
           id?: string;
-          image?: string;
+          image_bucket: string;
+          image_path: string;
           sort?: number | null;
           valvo?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'valvo_image_image_fkey';
-            columns: ['image'];
+            foreignKeyName: 'public_valvo_image_image_path_image_bucket_fkey';
+            columns: ['image_path', 'image_bucket'];
             isOneToOne: false;
             referencedRelation: 'objects';
             referencedColumns: ['id'];
@@ -1507,6 +1513,138 @@ export type Database = {
           longitude: number | null;
         };
         Relationships: [];
+      };
+      water_temparature_view: {
+        Row: {
+          day: string | null;
+          valvo_id: string | null;
+          water_temperature_max: number | null;
+          water_temperature_min: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'valvo';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'agitation_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'growth_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'mortality_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'night_and_day_rhythm_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'tidal_rhythm_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'valve_closing_duration_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'valve_opening_amplitude_indicator';
+            referencedColumns: ['valvo_id'];
+          }
+        ];
+      };
+      water_temperature_view: {
+        Row: {
+          day: string | null;
+          valvo_id: string | null;
+          water_temperature_max: number | null;
+          water_temperature_min: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'valvo';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'agitation_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'growth_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'mortality_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'night_and_day_rhythm_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'tidal_rhythm_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'valve_closing_duration_indicator';
+            referencedColumns: ['valvo_id'];
+          },
+          {
+            foreignKeyName: 'public_water_temperature_valvo_fkey';
+            columns: ['valvo_id'];
+            isOneToOne: false;
+            referencedRelation: 'valve_opening_amplitude_indicator';
+            referencedColumns: ['valvo_id'];
+          }
+        ];
       };
     };
     Functions: {
@@ -1707,6 +1845,18 @@ export type Database = {
           feature: Json;
         }[];
       };
+      get_water_temperature_view: {
+        Args: {
+          p_start_date: string;
+          p_period_of_time: number;
+          p_valvo_id: string;
+        };
+        Returns: {
+          day: string;
+          water_temperature_min: number;
+          water_temperature_max: number;
+        }[];
+      };
       is_admin: {
         Args: {
           id: string;
@@ -1770,6 +1920,7 @@ export type Database = {
         growth: Json | null;
         max_amplitude: Json | null;
         spawning: Json | null;
+        water_temperature: Json | null;
       };
       general_indicator_light: {
         day: string | null;

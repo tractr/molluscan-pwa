@@ -11,7 +11,23 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.weatherapi.com',
         pathname: '/weather/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'molluscan-supabase.com',
+        pathname: '/storage/v1/object/public/valvo_images/**',
+      },
     ],
+    dangerouslyAllowSVG: true,
+    unoptimized: process.env.NODE_ENV === 'development',
+  },
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.experiments = {
+        ...config.experiments,
+        topLevelAwait: true,
+      };
+    }
+    return config;
   },
 };
 

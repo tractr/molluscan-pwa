@@ -1,10 +1,17 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createTodo, deleteTodo, getTodos, TodoInsert, TodoUpdate, updateTodo } from './todos';
 import { useToast } from '@/hooks/use-toast';
-import { getValvosGeography, getValvo, getGeneralIndicator, getIndicatorHistory } from './valvo';
+import {
+  getValvosGeography,
+  getValvo,
+  getGeneralIndicator,
+  getIndicatorHistory,
+  getImagesValvo,
+} from './valvo';
 import { getCities } from './cities';
 import { IndicatorGeneralDetails } from '@/types/valvo';
 import { WeatherData } from '@/types/weather';
+import { getPublicImageUrl } from '../supabase/storage';
 
 export interface ValvoHistoryEntry {
   date: Date;
@@ -47,6 +54,23 @@ export function useValvosGeography({ done }: { done?: boolean } = {}) {
   return useQuery({
     queryKey: ['valvosGeography', { done }],
     queryFn: () => getValvosGeography({ done }),
+  });
+}
+
+export function useValvoImages(valvoId: string | null, done?: boolean) {
+  return useQuery({
+    queryKey: ['valvoImages', valvoId, { done }],
+    queryFn: async () => {
+      const images = await getImagesValvo({ valvo_id: valvoId!, done });
+      const imagesWithUrls = await Promise.all(
+        images.map(async image => ({
+          ...image,
+          url: await getPublicImageUrl(image.image_path, image.image_bucket),
+        }))
+      );
+      return imagesWithUrls;
+    },
+    enabled: !!valvoId,
   });
 }
 

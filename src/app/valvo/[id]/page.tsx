@@ -6,6 +6,7 @@ import {
   useValvoGeography,
   useWeatherHistory,
   useValvoIndicatorHistory,
+  useValvoImages,
 } from '@/lib/api/queries';
 import { Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
@@ -14,6 +15,7 @@ import { IndicatorHeader } from '@/components/IndicatorHeader';
 import { WeatherHistory } from '@/components/WeatherHistory';
 import { IndicatorGrid } from '@/components/IndicatorGrid';
 import { Statistics } from '@/components/Statistics';
+import { ValvoImages } from '@/components/ValvoImages';
 
 export default function ValvoPage() {
   const { id } = useParams();
@@ -36,6 +38,7 @@ export default function ValvoPage() {
     id as string,
     parseInt(period)
   );
+  const { data: valvoImages, isLoading: isLoadingImages } = useValvoImages(id as string);
 
   if (isLoading || isLoadingGeo)
     return (
@@ -89,6 +92,8 @@ export default function ValvoPage() {
           <Statistics data={indicatorHistory || []} period={period} onPeriodChange={setPeriod} />
         )}
       </div>
+
+      <ValvoImages images={valvoImages || []} isLoading={isLoadingImages} />
     </>
   );
 }
