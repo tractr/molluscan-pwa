@@ -8,11 +8,13 @@ interface IndicatorGridProps {
 export function IndicatorGrid({ indicators }: IndicatorGridProps) {
   return (
     <div className="container max-w-4xl mx-auto relative">
-      <div className="grid grid-cols-2 gap-4">
+      <h2 className="text-xl font-bold text-center uppercase">Indicateurs physiologiques</h2>
+      <div className="grid grid-cols-2 gap-4 p-4">
         {indicators.mortality && (
           <IndicatorCard
             value={indicators.mortality.value}
-            label="Mortalité"
+            label="ML"
+            tooltip="Mortality Level"
             indicator={indicators.mortality.indicator}
             reason={indicators.mortality.reason}
           />
@@ -20,7 +22,9 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
         {indicators.agitation && (
           <IndicatorCard
             value={indicators.agitation.value}
-            label="Agitation"
+            label="GAL"
+            tooltip="Global Agitation Level"
+            unit="mm"
             indicator={indicators.agitation.indicator}
             reason={indicators.agitation.reason}
           />
@@ -28,7 +32,9 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
         {indicators.agitation_during_opening_period && (
           <IndicatorCard
             value={indicators.agitation_during_opening_period.value}
-            label="Agitation pendant l'ouverture"
+            label="OAL"
+            tooltip="Opening Agitation Level"
+            unit="mm"
             indicator={indicators.agitation_during_opening_period.indicator}
             reason={indicators.agitation_during_opening_period.reason}
           />
@@ -36,7 +42,9 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
         {indicators.valve_closing_duration && (
           <IndicatorCard
             value={indicators.valve_closing_duration.value}
-            label="Durée de fermeture"
+            label="VOD"
+            tooltip="Valve Opening Duration"
+            unit="%/h"
             indicator={indicators.valve_closing_duration.indicator}
             reason={indicators.valve_closing_duration.reason}
           />
@@ -44,7 +52,9 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
         {indicators.valve_opening_amplitude && (
           <IndicatorCard
             value={indicators.valve_opening_amplitude.value}
-            label="Amplitude d'ouverture"
+            label="VOA"
+            tooltip="Valve Opening Amplitude"
+            unit="%"
             indicator={indicators.valve_opening_amplitude.indicator}
             reason={indicators.valve_opening_amplitude.reason}
           />
@@ -53,6 +63,8 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
           <IndicatorCard
             value={indicators.night_and_day_rhythm.value}
             label="Rythme jour/nuit"
+            tooltip="Rythme jour/nuit"
+            unit="%"
             indicator={indicators.night_and_day_rhythm.indicator}
             reason={indicators.night_and_day_rhythm.reason}
           />
@@ -61,6 +73,8 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
           <IndicatorCard
             value={indicators.tidal_rhythm.value}
             label="Rythme des marées"
+            tooltip="Rythme des marées"
+            unit="%"
             indicator={indicators.tidal_rhythm.indicator}
             reason={indicators.tidal_rhythm.reason}
           />
@@ -69,6 +83,8 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
           <IndicatorCard
             value={indicators.growth.value}
             label="Croissance"
+            tooltip="Croissance"
+            unit="mm"
             indicator={indicators.growth.indicator}
             reason={indicators.growth.reason}
           />
@@ -77,6 +93,8 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
           <IndicatorCard
             value={indicators.max_amplitude.value}
             label="Amplitude maximale"
+            tooltip="Amplitude maximale"
+            unit="mm"
             indicator={indicators.max_amplitude.indicator}
             reason={indicators.max_amplitude.reason}
           />
@@ -85,6 +103,7 @@ export function IndicatorGrid({ indicators }: IndicatorGridProps) {
           <IndicatorCard
             value={indicators.spawning.value}
             label="Ponte"
+            tooltip="Ponte"
             indicator={indicators.spawning.indicator}
             reason={indicators.spawning.reason}
           />
