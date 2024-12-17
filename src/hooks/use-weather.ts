@@ -1,3 +1,4 @@
+import { env } from '@/lib/env';
 import { WeatherData, Location } from '@/types/weather';
 import { useEffect, useState } from 'react';
 
@@ -10,9 +11,9 @@ export function useWeather(location: Location) {
     const fetchWeather = async () => {
       try {
         const res = await fetch(
-          `https://api.weatherapi.com/v1/history.json?key=${
-            process.env.NEXT_PUBLIC_WEATHER_API_KEY
-          }&q=${location.lat},${location.lng}&dt=${new Date().toISOString()}&lang=fr`
+          `https://api.weatherapi.com/v1/history.json?key=${env().NEXT_PUBLIC_WEATHER_API_KEY}&q=${
+            location.lat
+          },${location.lng}&dt=${new Date().toISOString()}&lang=fr`
         );
         if (!res.ok) {
           throw new Error('Erreur lors de la récupération de la météo');

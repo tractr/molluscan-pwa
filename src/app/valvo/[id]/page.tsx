@@ -11,11 +11,11 @@ import {
 import { Loader2 } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
-import { IndicatorHeader } from '@/components/IndicatorHeader';
-import { WeatherHistory } from '@/components/WeatherHistory';
-import { IndicatorGrid } from '@/components/IndicatorGrid';
-import { Statistics } from '@/components/Statistics';
-import { ValvoImages } from '@/components/ValvoImages';
+import { IndicatorHeader } from '@/components/indicator-header';
+import { WeatherHistory } from '@/components/weather-history';
+import { IndicatorGrid } from '@/components/indicator-grid';
+import { Statistics } from '@/components/statistics';
+import { ValvoImages } from '@/components/valvo-images';
 
 export default function ValvoPage() {
   const { id } = useParams();

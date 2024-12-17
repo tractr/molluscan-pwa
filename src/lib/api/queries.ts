@@ -1,6 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createTodo, deleteTodo, getTodos, TodoInsert, TodoUpdate, updateTodo } from './todos';
-import { useToast } from '@/hooks/use-toast';
+import { useQuery } from '@tanstack/react-query';
 import {
   getValvosGeography,
   getValvo,
@@ -12,6 +10,7 @@ import { getCities } from './cities';
 import { IndicatorGeneralDetails } from '@/types/valvo';
 import { WeatherData } from '@/types/weather';
 import { getPublicImageUrl } from '../supabase/storage';
+import { env } from '../env';
 
 export interface ValvoHistoryEntry {
   date: Date;
@@ -28,9 +27,9 @@ async function fetchWeatherForDate(
 ): Promise<WeatherData | null> {
   try {
     const res = await fetch(
-      `https://api.weatherapi.com/v1/history.json?key=${
-        process.env.NEXT_PUBLIC_WEATHER_API_KEY
-      }&q=${location.lat},${location.lng}&dt=${date.toISOString().split('T')[0]}&lang=fr`
+      `https://api.weatherapi.com/v1/history.json?key=${env().NEXT_PUBLIC_WEATHER_API_KEY}&q=${
+        location.lat
+      },${location.lng}&dt=${date.toISOString().split('T')[0]}&lang=fr`
     );
     if (!res.ok) {
       throw new Error('Erreur lors de la récupération de la météo');
@@ -41,13 +40,6 @@ async function fetchWeatherForDate(
     console.error('Erreur météo:', err);
     return null;
   }
-}
-
-export function useTodos({ done }: { done?: boolean } = {}) {
-  return useQuery({
-    queryKey: ['todos', { done }],
-    queryFn: () => getTodos({ done }),
-  });
 }
 
 export function useValvosGeography({ done }: { done?: boolean } = {}) {
@@ -108,75 +100,6 @@ export function useCities({ done }: { done?: boolean } = {}) {
   return useQuery({
     queryKey: ['cities', { done }],
     queryFn: () => getCities({ done }),
-  });
-}
-
-export function useCreateTodo() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-
-  return useMutation({
-    mutationFn: (todo: TodoInsert) => createTodo(todo),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
-      toast({
-        title: 'Success',
-        description: 'Todo created successfully',
-      });
-    },
-    onError: error => {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.message,
-      });
-    },
-  });
-}
-
-export function useUpdateTodo() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-
-  return useMutation({
-    mutationFn: ({ id, todo }: { id: number; todo: TodoUpdate }) => updateTodo(id, todo),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
-      toast({
-        title: 'Success',
-        description: 'Todo updated successfully',
-      });
-    },
-    onError: error => {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.message,
-      });
-    },
-  });
-}
-
-export function useDeleteTodo() {
-  const queryClient = useQueryClient();
-  const { toast } = useToast();
-
-  return useMutation({
-    mutationFn: (id: number) => deleteTodo(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['todos'] });
-      toast({
-        title: 'Success',
-        description: 'Todo deleted successfully',
-      });
-    },
-    onError: error => {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: error.message,
-      });
-    },
   });
 }
 

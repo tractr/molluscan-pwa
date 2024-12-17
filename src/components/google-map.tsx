@@ -2,13 +2,14 @@ import { useValvosGeography, useValvoWithIndicator } from '@/lib/api/queries';
 import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { useState, useMemo, useEffect } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { CitySelect } from './CitySelect';
+import { CitySelect } from './city-select';
 import { CityGeography, ValvoGeography } from '@/types/database';
-import { ValvoCard } from './ValvoCard';
+import { ValvoCard } from './valvo-card';
+import { env } from '@/lib/env';
 
 const GoogleMapComponent = () => {
   const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: env().NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
   });
 
   const { data: valvos } = useValvosGeography() as { data: ValvoGeography[] | undefined };
