@@ -7,6 +7,7 @@ import { CityGeography, ValvoGeography } from '@/types/database';
 import { ValvoCard } from './valvo-card';
 import { env } from '@/lib/env';
 import { ValvoWithIndicator } from '@/types/valvo';
+import Loading from '@/components/loading';
 
 const GoogleMapComponent = () => {
   const { isLoaded } = useLoadScript({
@@ -38,7 +39,7 @@ const GoogleMapComponent = () => {
     }
   }, [valvos, selectedValvoId]);
 
-  if (!isLoaded) return <div>Chargement...</div>;
+  if (!isLoaded) return <Loading />;
 
   const handleMapClick = () => {
     setIsValvoCardOpen(false);
