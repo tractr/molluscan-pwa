@@ -183,7 +183,7 @@ export function Statistics({ data, period, onPeriodChange }: StatisticsProps) {
                 outerRadius={90}
                 paddingAngle={0}
                 dataKey="value"
-                label={({ value, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                label={({ value, cx, cy, midAngle, outerRadius }) => {
                   const RADIAN = Math.PI / 180;
                   const radius = outerRadius + 20;
                   const x = cx + radius * Math.cos(-midAngle * RADIAN);
