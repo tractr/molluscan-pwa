@@ -7,9 +7,32 @@ import { cn } from "@/lib/utils"
 
 const TooltipProvider = TooltipPrimitive.Provider
 
-const Tooltip = TooltipPrimitive.Root
+const Tooltip = ({ children, ...props }: { children: React.ReactNode } & TooltipPrimitive.TooltipProps) => {
+  const [open, setOpen] = React.useState(false);
+  
+  return (
+    <TooltipPrimitive.Root 
+      open={open} 
+      onOpenChange={setOpen}
+      delayDuration={0}
+      {...props}
+    >
+      {children}
+    </TooltipPrimitive.Root>
+  );
+};
 
-const TooltipTrigger = TooltipPrimitive.Trigger
+const TooltipTrigger = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>
+>(({ className, ...props }, ref) => (
+  <TooltipPrimitive.Trigger
+    ref={ref}
+    className={cn("cursor-pointer touch-none", className)}
+    {...props}
+  />
+));
+TooltipTrigger.displayName = TooltipPrimitive.Trigger.displayName;
 
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,

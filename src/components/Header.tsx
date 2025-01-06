@@ -1,16 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu, Map, Info, User } from 'lucide-react';
+import { Menu, Map, Info, User, BarChart } from 'lucide-react';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
+import { cn } from '@/lib/utils';
 
 export const Header = () => {
   const router = useRouter();
@@ -37,13 +32,15 @@ export const Header = () => {
     };
   }, [lastScrollY]);
 
+  const pathname = usePathname();
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 bg-white z-50 transition-transform duration-300 shadow-sm ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
-      <div className="container mx-auto px-4 h-16 flex items-center justify-center md:justify-between">
+      <div className="container mx-auto px-4 h-16 flex items-center md:justify-between justify-center">
         <div className="flex items-center">
           <Image
             src="/images/logo-molluscan.png"
@@ -56,35 +53,48 @@ export const Header = () => {
           />
         </div>
 
-        <div className="hidden md:block w-12">
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <button className="p-2 hover:bg-gray-100 rounded-full" aria-label="Menu">
-                <Menu className="h-8 w-8 text-black" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem asChild>
-                <Link href="/" className="flex items-center gap-2">
-                  <Map className="h-4 w-4" />
-                  <span>Carte</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="opacity-50 pointer-events-none">
-                <Link href="/about" className="flex items-center gap-2">
-                  <Info className="h-4 w-4" />
-                  <span>À propos</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild className="opacity-50 pointer-events-none">
-                <Link href="/profile" className="flex items-center gap-2">
-                  <User className="h-4 w-4" />
-                  <span>Profil</span>
-                </Link>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <nav className="hidden md:flex items-center gap-6">
+          <Link 
+            href="/" 
+            className={cn(
+              'flex items-center gap-2 hover:text-gray-600',
+              pathname === '/' ? 'text-blue-500' : ''
+            )}
+          >
+            <Map className="h-4 w-4" />
+            <span>Carte</span>
+          </Link>
+          <Link 
+            href="/a-propos" 
+            className={cn(
+              'flex items-center gap-2 hover:text-gray-600',
+              pathname === '/a-propos' ? 'text-blue-500' : ''
+            )}
+          >
+            <Info className="h-4 w-4" />
+            <span>À propos</span>
+          </Link>
+          <Link 
+            href="/statistiques" 
+            className={cn(
+              'flex items-center gap-2 hover:text-gray-600',
+              pathname === '/statistiques' ? 'text-blue-500' : ''
+            )}
+          >
+            <BarChart className="h-4 w-4" />
+            <span>Statistiques</span>
+          </Link>
+          <Link 
+            href="/profile" 
+            className={cn(
+              'flex items-center gap-2 hover:text-gray-600',
+              pathname === '/profile' ? 'text-blue-500' : ''
+            )}
+          >
+            <User className="h-4 w-4" />
+            <span>Profil</span>
+          </Link>
+        </nav>
       </div>
     </header>
   );

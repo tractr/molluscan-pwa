@@ -6,6 +6,8 @@ import Image from 'next/image';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Separator } from './ui/separator';
 import { WeatherData } from '@/types/weather';
+import { CircleHelp } from 'lucide-react';
+
 
 interface IndicatorHeaderProps {
   value: number;
@@ -66,8 +68,11 @@ export function IndicatorHeader({
               </div>
               <TooltipProvider>
                 <Tooltip>
-                  <TooltipTrigger className="text-base font-medium underline decoration-dotted">
-                    <span>MWI</span>
+                  <TooltipTrigger asChild>
+                    <button className="text-base font-medium flex items-center gap-1">
+                      <span>MWI</span>
+                      <CircleHelp className="w-3 h-3 text-black" />
+                    </button>
                   </TooltipTrigger>
                   <TooltipContent>
                     <p>Molluscan Water Indicateur</p>

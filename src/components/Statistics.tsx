@@ -127,8 +127,8 @@ export function Statistics({ data, period, onPeriodChange }: StatisticsProps) {
       <div className="flex flex-col lg:flex-row gap-8">
         <div className="w-full lg:w-2/3 bg-white rounded-lg border border-gray-200 p-4">
           <h3 className="text-lg font-semibold mb-2 text-center">Historique</h3>
-          <div className="h-[300px] w-full overflow-hidden">
-            <div className="overflow-x-auto -ml-4">
+          <div className="h-[300px] w-full overflow-y-hidden overflow-x-auto">
+            <div className="-ml-4">
               <BarChart
                 width={getChartWidth(period)}
                 height={300}
@@ -180,10 +180,26 @@ export function Statistics({ data, period, onPeriodChange }: StatisticsProps) {
               <Pie
                 data={donutData}
                 innerRadius={60}
-                outerRadius={100}
+                outerRadius={90}
                 paddingAngle={0}
                 dataKey="value"
-                label={({ value }) => `${value.toFixed(1)}%`}
+                label={({ value, cx, cy, midAngle, innerRadius, outerRadius }) => {
+                  const RADIAN = Math.PI / 180;
+                  const radius = outerRadius + 20;
+                  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                  return (
+                    <text
+                      x={x}
+                      y={y}
+                      fill="#000"
+                      textAnchor={x > cx ? 'start' : 'end'}
+                      dominantBaseline="central"
+                    >
+                      {`${value.toFixed(1)}%`}
+                    </text>
+                  );
+                }}
                 labelLine={false}
               >
                 {donutData.map((entry, index) => (
@@ -200,7 +216,7 @@ export function Statistics({ data, period, onPeriodChange }: StatisticsProps) {
                     good: 'Bon',
                     excellent: 'Excellent',
                   };
-                  return [`${nameMap[name] || name}: ${value}%`];
+                  return [`${nameMap[name] || name}: ${value.toFixed(1)}%`];
                 }}
               />
             </PieChart>

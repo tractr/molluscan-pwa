@@ -6,6 +6,7 @@ import { IndicatorGeneralDetails } from '@/types/valvo';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { CircleHelp } from 'lucide-react';
 
 interface ValvoCardProps {
   valvoId: string;
@@ -36,8 +37,10 @@ export function ValvoCard({ valvoId, valvo, open, onOpenChange }: ValvoCardProps
       </DialogHeader>
       <DialogContent
         onClick={handleClick}
+        hideCloseButton={true}
+        onOpenAutoFocus={(e) => e.preventDefault()}
         className={cn(
-          'max-w-[calc(100%-2rem)] w-[425px] sm:w-[600px] absolute top-auto bottom-10 left-1/2 -translate-x-1/2 h-fit border-white border-2 shadow-2xl backdrop-blur-sm overflow-hidden flex flex-row items-stretch gap-4 md:gap-8 p-0 cursor-pointer hover:scale-[1.02] transition-transform',
+          'max-w-[calc(100%-2rem)] w-[425px] sm:w-[600px] absolute top-auto bottom-10 left-1/2 -translate-x-1/2 h-fit border-white border-2 shadow-2xl backdrop-blur-sm overflow-hidden flex flex-row items-stretch gap-4 md:gap-8 p-0 cursor-pointer hover:shadow-md hover:border-white/70 transition-all duration-300 ease-out',
           indicatorColorClasses[color as keyof typeof indicatorColorClasses]
         )}
       >
@@ -54,10 +57,13 @@ export function ValvoCard({ valvoId, valvo, open, onOpenChange }: ValvoCardProps
         <div className="flex-1 flex flex-col items-center justify-center py-4 md:py-6 pr-4 md:pr-6">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="text-base font-medium underline decoration-dotted">
-                <span className="text-xl md:text-4xl font-bold">
-                  {valvo.general_value?.toFixed(2) || 1}
-                </span>
+              <TooltipTrigger asChild>
+                <button className="text-base font-medium flex items-start gap-1">
+                  <span className="text-xl md:text-4xl font-bold">
+                    {valvo.general_value?.toFixed(2) || 1}
+                  </span>
+                  <CircleHelp className="w-3 h-3 text-black" />
+                </button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>Molluscan Water Indicateur</p>

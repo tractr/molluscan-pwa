@@ -7,7 +7,7 @@ export default function ProfilPage() {
       <div className="h-[400px] flex flex-col items-center justify-center">
         <Shell className="h-16 w-16 text-gray-400" />
         <p className="text-xl text-gray-600 font-medium text-center">
-          Cette section sera <br />
+          La section Profil sera <br />
           disponible prochainement
         </p>
       </div>

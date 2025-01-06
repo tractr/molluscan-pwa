@@ -52,9 +52,11 @@ export function IndicatorCard({
         <div className="flex flex-col gap-5">
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="flex items-center gap-1">
-                <span className="text-sm text-black">{label}</span>
-                <CircleHelp className="w-3 h-3 text-black" />
+              <TooltipTrigger asChild>
+                <button className="flex items-center gap-1">
+                  <span className="text-sm text-black">{label}</span>
+                  <CircleHelp className="w-3 h-3 text-black" />
+                </button>
               </TooltipTrigger>
               <TooltipContent>
                 <p>{tooltip}</p>

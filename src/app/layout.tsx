@@ -40,7 +40,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ReactQueryProvider>
           <NextIntlClientProvider messages={messages}>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
               <LayoutSimple>{children}</LayoutSimple>
             </ThemeProvider>
           </NextIntlClientProvider>
