@@ -9,12 +9,18 @@ const TooltipProvider = TooltipPrimitive.Provider
 
 const Tooltip = ({ children, ...props }: { children: React.ReactNode } & TooltipPrimitive.TooltipProps) => {
   const [open, setOpen] = React.useState(false);
+  const [isTouchDevice, setIsTouchDevice] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  }, []);
   
   return (
     <TooltipPrimitive.Root 
       open={open} 
       onOpenChange={setOpen}
-      delayDuration={0}
+      delayDuration={isTouchDevice ? 0 : 200}
+      disableHoverableContent={isTouchDevice}
       {...props}
     >
       {children}
