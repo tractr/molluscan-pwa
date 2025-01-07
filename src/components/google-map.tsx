@@ -1,6 +1,6 @@
 import { useValvosGeography, useValvoWithIndicator } from '@/lib/api/queries';
 import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CitySelect } from './city-select';
 import { CityGeography, ValvoGeography } from '@/types/database';
@@ -9,10 +9,30 @@ import { env } from '@/lib/env';
 import { ValvoWithIndicator } from '@/types/valvo';
 import Loading from '@/components/loading';
 
+const MAP_STORAGE_KEY = 'map-position';
+
+interface SavedMapPosition {
+  center: { lat: number; lng: number };
+  zoom: number;
+}
+
 const GoogleMapComponent = () => {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: env().NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
   });
+
+  // Récupérer la position sauvegardée du localStorage
+  const getSavedPosition = (): SavedMapPosition | null => {
+    if (typeof window === 'undefined') return null;
+    
+    try {
+      const saved = localStorage.getItem(MAP_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : null;
+    } catch (error) {
+      console.error('Error reading from localStorage:', error);
+      return null;
+    }
+  };
 
   const { data: valvos } = useValvosGeography();
   console.log(valvos);
@@ -23,26 +43,71 @@ const GoogleMapComponent = () => {
 
   const center = useMemo(() => {
     if (selectedCity) {
+      const position: SavedMapPosition = {
+        center: { lat: selectedCity.latitude, lng: selectedCity.longitude },
+        zoom: 10,
+      };
+      localStorage.setItem(MAP_STORAGE_KEY, JSON.stringify(position));
       return { lat: selectedCity.latitude, lng: selectedCity.longitude };
+    }
+    const savedPosition = getSavedPosition();
+    if (savedPosition) {
+      console.log(savedPosition);
+      return savedPosition.center;
     }
     if (valvos && valvos.length > 0) {
       return { lat: valvos[0].latitude, lng: valvos[0].longitude };
     }
-    return { lat: 43.4, lng: 3.7 }; // Valeurs par défaut
+    return { lat: -14.6, lng: -145.2 }; // Valeurs par défaut
   }, [selectedCity, valvos]);
 
-  // Ouvrir automatiquement la première valvo au chargement
+  // Sauvegarder la position dans le localStorage
+  const handleBoundsChanged = () => {
+    if (typeof window === 'undefined') return;
+
+    const map = mapRef.current;
+    if (map) {
+      const newCenter = map.getCenter();
+      const newZoom = map.getZoom();
+      if (newCenter && newZoom) {
+        try {
+          const position: SavedMapPosition = {
+            center: { lat: newCenter.lat(), lng: newCenter.lng() },
+            zoom: newZoom,
+          };
+          localStorage.setItem(MAP_STORAGE_KEY, JSON.stringify(position));
+        } catch (error) {
+          console.error('Error saving to localStorage:', error);
+        }
+      }
+    }
+  };
+
+  // Ajouter une référence à la carte
+  const mapRef = useRef<google.maps.Map | null>(null);
+
+  // Gestionnaire pour sauvegarder la référence de la carte
+  const onLoad = useCallback((map: google.maps.Map) => {
+    mapRef.current = map;
+  }, []);
+
+  // Effet pour la sélection automatique du premier marqueur
   useEffect(() => {
     if (valvos && valvos.length > 0 && !selectedValvoId) {
-      setSelectedValvoId(valvos[0].id);
-      setIsValvoCardOpen(true);
+      const savedPosition = getSavedPosition();
+      // Sélectionner le premier marqueur uniquement au premier chargement
+      if (!savedPosition) {
+        setSelectedValvoId(valvos[0].id);
+        setIsValvoCardOpen(true);
+      }
     }
-  }, [valvos, selectedValvoId]);
+  }, [valvos]);
 
   if (!isLoaded) return <Loading />;
 
   const handleMapClick = () => {
     setIsValvoCardOpen(false);
+    setSelectedValvoId(null);
   };
 
   const handleMarkerClick = (valvo: ValvoGeography) => {
@@ -123,13 +188,16 @@ const GoogleMapComponent = () => {
       {isLoaded && <Skeleton className="absolute inset-0" />}
       <CitySelect onCityChange={setSelectedCity} />
       <GoogleMap
-        zoom={10}
+        zoom={getSavedPosition()?.zoom || 10}
         options={{ streetViewControl: false, fullscreenControl: false, mapTypeControl: false }}
         mapTypeId="satellite"
         center={center}
         mapContainerClassName="map-container"
         mapContainerStyle={{ width: '100%', height: '100vh' }}
         onClick={handleMapClick}
+        onLoad={onLoad}
+        onDragEnd={handleBoundsChanged}
+        onZoomChanged={handleBoundsChanged}
       >
         {valvos?.map((valvo, index) => (
           <Marker
@@ -145,7 +213,10 @@ const GoogleMapComponent = () => {
         valvoId={selectedValvoId || ''}
         valvo={selectedValvoWithIndicator || null}
         open={isValvoCardOpen}
-        onOpenChange={setIsValvoCardOpen}
+        onOpenChange={(open) => {
+          setIsValvoCardOpen(open);
+          if (!open) setSelectedValvoId(null);
+        }}
       />
     </div>
   );
