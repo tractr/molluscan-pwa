@@ -2,14 +2,15 @@
 
 import * as React from "react"
 import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+import { useToast } from "@/hooks/use-toast"
 
 import { cn } from "@/lib/utils"
 
 const TooltipProvider = TooltipPrimitive.Provider
 
 const Tooltip = ({ children, ...props }: { children: React.ReactNode } & TooltipPrimitive.TooltipProps) => {
-  const [open, setOpen] = React.useState(false);
   const [isTouchDevice, setIsTouchDevice] = React.useState(false);
+  const { toast } = useToast();
 
   React.useEffect(() => {
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
@@ -17,21 +18,48 @@ const Tooltip = ({ children, ...props }: { children: React.ReactNode } & Tooltip
 
   const handleTouchStart = (e: React.TouchEvent) => {
     e.preventDefault();
-    setOpen(true);
+    const findTooltipContent = (children: React.ReactNode): React.ReactElement | null => {
+      const childrenArray = React.Children.toArray(children);
+      for (const child of childrenArray) {
+        if (React.isValidElement(child)) {
+          if (child.type === TooltipContent) {
+            return child;
+          }
+          const found = findTooltipContent(child.props.children);
+          if (found) return found;
+        }
+      }
+      return null;
+    };
+
+    const tooltipContent = findTooltipContent(children);
+    
+    if (tooltipContent) {
+      const content = React.Children.toArray(tooltipContent.props.children).find(
+        child => React.isValidElement(child) && child.type === 'p'
+      );
+
+      toast({
+        description: React.isValidElement(content) ? content.props.children : 'Info',
+        duration: 2500,
+        className: "top-5"
+      });
+    }
   };
-  
+
   return (
-    <div onTouchStart={handleTouchStart}>
-      <TooltipPrimitive.Root 
-        open={open} 
-        onOpenChange={setOpen}
-        delayDuration={0}
-        disableHoverableContent={isTouchDevice}
-        {...props}
-      >
-        {children}
-      </TooltipPrimitive.Root>
-    </div>
+    <TooltipPrimitive.Root 
+      delayDuration={200}
+      {...props}
+    >
+      {isTouchDevice ? (
+        <div onTouchStart={handleTouchStart}>
+          {children}
+        </div>
+      ) : (
+        children
+      )}
+    </TooltipPrimitive.Root>
   );
 };
 
