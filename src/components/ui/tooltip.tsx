@@ -14,17 +14,24 @@ const Tooltip = ({ children, ...props }: { children: React.ReactNode } & Tooltip
   React.useEffect(() => {
     setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
   }, []);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    e.preventDefault();
+    setOpen(true);
+  };
   
   return (
-    <TooltipPrimitive.Root 
-      open={open} 
-      onOpenChange={setOpen}
-      delayDuration={isTouchDevice ? 0 : 200}
-      disableHoverableContent={isTouchDevice}
-      {...props}
-    >
-      {children}
-    </TooltipPrimitive.Root>
+    <div onTouchStart={handleTouchStart}>
+      <TooltipPrimitive.Root 
+        open={open} 
+        onOpenChange={setOpen}
+        delayDuration={0}
+        disableHoverableContent={isTouchDevice}
+        {...props}
+      >
+        {children}
+      </TooltipPrimitive.Root>
+    </div>
   );
 };
 
