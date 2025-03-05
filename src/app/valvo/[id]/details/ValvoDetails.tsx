@@ -10,15 +10,32 @@ import { cn } from '@/lib/utils';
 import createClient from '@/lib/supabase/client';
 import IndicatorResult, { IndicatorData } from '@/components/indicators/IndicatorResult';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 
 interface ValvoDetailsProps {
   valvoId: string;
 }
 
+// Interface for when there's no data available
+interface NoDataIndicator {
+  reason: string;
+  indicator: number;
+}
+
+// Interface for general indicator
+interface GeneralIndicatorData {
+  value: number;
+  indicator: number;
+}
+
+// Union type for possible indicator data types
+type IndicatorDataType = IndicatorData | NoDataIndicator;
+
 interface GeneralIndicator {
-  mortality?: IndicatorData;
-  agitation?: IndicatorData;
-  [key: string]: IndicatorData | undefined;
+  mortality?: IndicatorDataType;
+  agitation?: IndicatorDataType;
+  general?: GeneralIndicatorData;
+  [key: string]: IndicatorDataType | GeneralIndicatorData | undefined;
 }
 
 type IndicatorType = 'mortality' | 'agitation';
@@ -28,7 +45,7 @@ const INDICATORS = [
   { id: 'agitation', label: 'Agitation' },
 ];
 
-// Function to get badge color based on indicator value
+// Function to get badge color based on indicator value (0-5 scale)
 const getIndicatorColor = (value: number | null | undefined): string => {
   if (value === null || value === undefined) return 'bg-gray-300 text-gray-800';
 
@@ -46,6 +63,37 @@ const getIndicatorColor = (value: number | null | undefined): string => {
     default:
       return 'bg-gray-300 text-gray-800';
   }
+};
+
+// Function to get general indicator color based on 0-10 scale
+const getGeneralIndicatorColor = (value: number | null | undefined): string => {
+  if (value === null || value === undefined) return 'bg-gray-300 text-gray-800';
+
+  if (value >= 8) return 'bg-blue-500 text-white';
+  if (value >= 6) return 'bg-green-500 text-white';
+  if (value >= 4) return 'bg-yellow-500 text-black';
+  if (value >= 2) return 'bg-orange-500 text-white';
+  return 'bg-red-500 text-white';
+};
+
+// Function to check if an object is a NoDataIndicator
+const isNoDataIndicator = (data: unknown): data is NoDataIndicator => {
+  return (
+    data !== null &&
+    typeof data === 'object' &&
+    'reason' in (data as Record<string, unknown>) &&
+    (data as NoDataIndicator).reason === 'NO_DATA_AVAILABLE'
+  );
+};
+
+// Function to check if an object is an IndicatorData
+const isIndicatorData = (data: unknown): data is IndicatorData => {
+  return (
+    data !== null &&
+    typeof data === 'object' &&
+    'config' in (data as Record<string, unknown>) &&
+    'values_details' in (data as Record<string, unknown>)
+  );
 };
 
 const supabase = createClient();
@@ -102,25 +150,54 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
     setSelectedIndicator(indicator);
   };
 
-  const currentIndicatorData = generalIndicator?.[selectedIndicator] || null;
-
   // Get indicator values for badges
-  const getIndicatorValue = (indicatorType: IndicatorType): number | null => {
-    if (!generalIndicator || !generalIndicator[indicatorType]) return null;
+  const getIndicatorValue = (
+    indicatorType: IndicatorType
+  ): { value: number | null; indicator: number | null } => {
+    if (!generalIndicator || !generalIndicator[indicatorType])
+      return { value: null, indicator: null };
 
-    // Try to find the indicator value in the config
     const indicatorData = generalIndicator[indicatorType];
 
     // Log the data structure to help debug
     console.log(`Indicator data for ${indicatorType}:`, indicatorData);
 
-    // The indicator value is directly in the indicatorData object, not in config
-    if (indicatorData && typeof indicatorData.indicator === 'number') {
-      return indicatorData.indicator;
+    // Check if it's a NoDataIndicator or a regular IndicatorData
+    if (indicatorData && 'indicator' in indicatorData && 'value' in indicatorData) {
+      return {
+        indicator: indicatorData.indicator as number,
+        value: indicatorData.value as number,
+      };
     }
 
-    return null;
+    if (indicatorData && 'indicator' in indicatorData) {
+      return {
+        indicator: indicatorData.indicator as number,
+        value: null,
+      };
+    }
+
+    return { value: null, indicator: null };
   };
+
+  // Check if the current indicator has no data
+  const hasNoData = (indicatorType: IndicatorType): boolean => {
+    if (!generalIndicator || !generalIndicator[indicatorType]) return true;
+
+    const indicatorData = generalIndicator[indicatorType];
+    return isNoDataIndicator(indicatorData);
+  };
+
+  // Get the general indicator data
+  const getGeneralIndicatorData = (): GeneralIndicatorData | null => {
+    if (!generalIndicator || !generalIndicator.general) return null;
+
+    return generalIndicator.general as GeneralIndicatorData;
+  };
+
+  const currentIndicatorData = generalIndicator?.[selectedIndicator] || null;
+  const currentIndicatorHasNoData = hasNoData(selectedIndicator);
+  const generalIndicatorData = getGeneralIndicatorData();
 
   return (
     <div className="p-4">
@@ -161,12 +238,32 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
           <div className="grid grid-cols-12 gap-6">
             {/* Left Menu */}
             <div className="col-span-12 md:col-span-2">
+              {/* General Indicator Card */}
+              {generalIndicatorData && (
+                <Card className="mb-4">
+                  <CardContent className="p-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-medium">General Indicator</h3>
+                      <div
+                        className={cn(
+                          'px-3 py-1 rounded-full font-bold text-lg',
+                          getGeneralIndicatorColor(generalIndicatorData.indicator)
+                        )}
+                      >
+                        {generalIndicatorData.value.toFixed(1)}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+
               <div className="bg-card rounded-md border p-2">
                 <h3 className="font-medium text-sm mb-3 px-2">Indicators</h3>
                 <div className="space-y-1">
                   {INDICATORS.map(indicator => {
-                    const indicatorValue = getIndicatorValue(indicator.id as IndicatorType);
-                    const badgeColor = getIndicatorColor(indicatorValue);
+                    const indicatorData = getIndicatorValue(indicator.id as IndicatorType);
+                    const badgeColor = getIndicatorColor(indicatorData.indicator);
+                    const noData = hasNoData(indicator.id as IndicatorType);
 
                     return (
                       <Button
@@ -179,9 +276,13 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
                         onClick={() => handleIndicatorSelect(indicator.id as IndicatorType)}
                       >
                         <span className="flex-1">{indicator.label}</span>
-                        {indicatorValue !== null && (
+                        {indicatorData.indicator !== null && (
                           <Badge className={cn('ml-2 font-bold', badgeColor)} variant="outline">
-                            {indicatorValue}
+                            {noData
+                              ? 'N/A'
+                              : indicatorData.value !== null
+                              ? indicatorData.value.toFixed(1)
+                              : 'N/A'}
                           </Badge>
                         )}
                       </Button>
@@ -193,7 +294,12 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
 
             {/* Indicator Result */}
             <div className="col-span-12 md:col-span-10">
-              {currentIndicatorData ? (
+              {currentIndicatorHasNoData ? (
+                <div className="text-muted-foreground p-4 bg-card rounded-md border">
+                  No data available for{' '}
+                  {INDICATORS.find(i => i.id === selectedIndicator)?.label || selectedIndicator}
+                </div>
+              ) : isIndicatorData(currentIndicatorData) ? (
                 <IndicatorResult
                   data={currentIndicatorData}
                   title={
@@ -202,7 +308,8 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
                 />
               ) : (
                 <div className="text-muted-foreground p-4 bg-card rounded-md border">
-                  No data available for {selectedIndicator}
+                  No data available for{' '}
+                  {INDICATORS.find(i => i.id === selectedIndicator)?.label || selectedIndicator}
                 </div>
               )}
             </div>
