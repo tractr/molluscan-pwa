@@ -34,15 +34,23 @@ type IndicatorDataType = IndicatorData | NoDataIndicator;
 interface GeneralIndicator {
   mortality?: IndicatorDataType;
   agitation?: IndicatorDataType;
+  valve_closing_duration?: IndicatorDataType;
+  valve_opening_amplitude?: IndicatorDataType;
   general?: GeneralIndicatorData;
   [key: string]: IndicatorDataType | GeneralIndicatorData | undefined;
 }
 
-type IndicatorType = 'mortality' | 'agitation';
+type IndicatorType =
+  | 'mortality'
+  | 'agitation'
+  | 'valve_closing_duration'
+  | 'valve_opening_amplitude';
 
 const INDICATORS = [
   { id: 'mortality', label: 'Mortality' },
   { id: 'agitation', label: 'Agitation' },
+  { id: 'valve_closing_duration', label: 'Valve Closing Duration' },
+  { id: 'valve_opening_amplitude', label: 'Valve Opening Amplitude' },
 ];
 
 // Function to get badge color based on indicator value (0-5 scale)
@@ -69,10 +77,10 @@ const getIndicatorColor = (value: number | null | undefined): string => {
 const getGeneralIndicatorColor = (value: number | null | undefined): string => {
   if (value === null || value === undefined) return 'bg-gray-300 text-gray-800';
 
-  if (value >= 8) return 'bg-blue-500 text-white';
-  if (value >= 6) return 'bg-green-500 text-white';
-  if (value >= 4) return 'bg-yellow-500 text-black';
-  if (value >= 2) return 'bg-orange-500 text-white';
+  if (value >= 4) return 'bg-blue-500 text-white';
+  if (value >= 3) return 'bg-green-500 text-white';
+  if (value >= 2) return 'bg-yellow-500 text-black';
+  if (value >= 1) return 'bg-orange-500 text-white';
   return 'bg-red-500 text-white';
 };
 
@@ -92,7 +100,7 @@ const isIndicatorData = (data: unknown): data is IndicatorData => {
     data !== null &&
     typeof data === 'object' &&
     'config' in (data as Record<string, unknown>) &&
-    'values_details' in (data as Record<string, unknown>)
+    'details' in (data as Record<string, unknown>)
   );
 };
 
