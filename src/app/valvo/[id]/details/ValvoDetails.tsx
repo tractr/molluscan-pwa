@@ -36,6 +36,12 @@ interface GeneralIndicator {
   agitation?: IndicatorDataType;
   valve_closing_duration?: IndicatorDataType;
   valve_opening_amplitude?: IndicatorDataType;
+  agitation_during_opening_period?: IndicatorDataType;
+  night_and_day_rhythm?: IndicatorDataType;
+  tidal_rhythm?: IndicatorDataType;
+  growth?: IndicatorDataType;
+  max_amplitude?: IndicatorDataType;
+  spawning?: IndicatorDataType;
   general?: GeneralIndicatorData;
   [key: string]: IndicatorDataType | GeneralIndicatorData | undefined;
 }
@@ -44,11 +50,23 @@ type IndicatorType =
   | 'mortality'
   | 'agitation'
   | 'valve_closing_duration'
-  | 'valve_opening_amplitude';
+  | 'valve_opening_amplitude'
+  | 'agitation_during_opening_period'
+  | 'night_and_day_rhythm'
+  | 'tidal_rhythm'
+  | 'growth'
+  | 'max_amplitude'
+  | 'spawning';
 
 const INDICATORS = [
-  { id: 'mortality', label: 'Mortality' },
   { id: 'agitation', label: 'Agitation' },
+  { id: 'agitation_during_opening_period', label: 'Agitation During Opening Period' },
+  { id: 'growth', label: 'Growth' },
+  { id: 'max_amplitude', label: 'Max Amplitude' },
+  { id: 'mortality', label: 'Mortality' },
+  { id: 'night_and_day_rhythm', label: 'Night and Day Rhythm' },
+  { id: 'spawning', label: 'Spawning' },
+  { id: 'tidal_rhythm', label: 'Tidal Rhythm' },
   { id: 'valve_closing_duration', label: 'Valve Closing Duration' },
   { id: 'valve_opening_amplitude', label: 'Valve Opening Amplitude' },
 ];
@@ -58,6 +76,8 @@ const getIndicatorColor = (value: number | null | undefined): string => {
   if (value === null || value === undefined) return 'bg-gray-300 text-gray-800';
 
   switch (value) {
+    case 6:
+      return 'bg-pink-500 text-white';
     case 5:
       return 'bg-blue-500 text-white';
     case 4:
@@ -102,6 +122,18 @@ const isIndicatorData = (data: unknown): data is IndicatorData => {
     'config' in (data as Record<string, unknown>) &&
     'details' in (data as Record<string, unknown>)
   );
+};
+
+// Helper function to format numbers with up to 4 decimal places, removing trailing zeros
+const formatNumber = (value: number | null): string => {
+  if (value === null || value === undefined) return 'N/A';
+
+  console.log('value', value);
+  // Format with 4 decimal places
+  const formatted = value.toFixed(4);
+
+  // Remove trailing zeros and decimal point if needed
+  return formatted.replace(/\.?0+$/, '');
 };
 
 const supabase = createClient();
@@ -207,6 +239,14 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
   const currentIndicatorHasNoData = hasNoData(selectedIndicator);
   const generalIndicatorData = getGeneralIndicatorData();
 
+  // Check if general indicator has a valid value
+  const isGeneralIndicatorNA =
+    !generalIndicatorData ||
+    generalIndicatorData.value === null ||
+    generalIndicatorData.value === undefined ||
+    generalIndicatorData.indicator === null ||
+    generalIndicatorData.indicator === undefined;
+
   return (
     <div className="p-4">
       <div className="mb-6">
@@ -245,7 +285,7 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
         {generalIndicator && !loading && !error && (
           <div className="grid grid-cols-12 gap-6">
             {/* Left Menu */}
-            <div className="col-span-12 md:col-span-2">
+            <div className="col-span-12 md:col-span-3">
               {/* General Indicator Card */}
               {generalIndicatorData && (
                 <Card className="mb-4">
@@ -255,19 +295,21 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
                       <div
                         className={cn(
                           'px-3 py-1 rounded-full font-bold text-lg',
-                          getGeneralIndicatorColor(generalIndicatorData.indicator)
+                          isGeneralIndicatorNA
+                            ? 'bg-gray-300 text-gray-800'
+                            : getGeneralIndicatorColor(generalIndicatorData.indicator)
                         )}
                       >
-                        {generalIndicatorData.value.toFixed(1)}
+                        {isGeneralIndicatorNA ? 'N/A' : formatNumber(generalIndicatorData.value)}
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               )}
 
-              <div className="bg-card rounded-md border p-2">
+              <div className="bg-card rounded-md border p-3">
                 <h3 className="font-medium text-sm mb-3 px-2">Indicators</h3>
-                <div className="space-y-1">
+                <div className="space-y-2">
                   {INDICATORS.map(indicator => {
                     const indicatorData = getIndicatorValue(indicator.id as IndicatorType);
                     const badgeColor = getIndicatorColor(indicatorData.indicator);
@@ -278,21 +320,17 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
                         key={indicator.id}
                         variant={selectedIndicator === indicator.id ? 'default' : 'ghost'}
                         className={cn(
-                          'w-full justify-start text-left',
+                          'w-full justify-start text-left py-3',
                           selectedIndicator === indicator.id ? '' : 'text-muted-foreground'
                         )}
                         onClick={() => handleIndicatorSelect(indicator.id as IndicatorType)}
                       >
+                        <Badge className={cn('mr-2 font-bold', badgeColor)} variant="outline">
+                          {noData || indicatorData.value === null
+                            ? 'N/A'
+                            : formatNumber(indicatorData.value)}
+                        </Badge>
                         <span className="flex-1">{indicator.label}</span>
-                        {indicatorData.indicator !== null && (
-                          <Badge className={cn('ml-2 font-bold', badgeColor)} variant="outline">
-                            {noData
-                              ? 'N/A'
-                              : indicatorData.value !== null
-                              ? indicatorData.value.toFixed(1)
-                              : 'N/A'}
-                          </Badge>
-                        )}
                       </Button>
                     );
                   })}
@@ -301,7 +339,7 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
             </div>
 
             {/* Indicator Result */}
-            <div className="col-span-12 md:col-span-10">
+            <div className="col-span-12 md:col-span-9">
               {currentIndicatorHasNoData ? (
                 <div className="text-muted-foreground p-4 bg-card rounded-md border">
                   No data available for{' '}

@@ -1,20 +1,26 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { format, parseISO } from 'date-fns';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 // Using Record<string, unknown> to allow for different structures
 type RawData = Record<string, unknown> | unknown[] | string | number | boolean | null;
 
+// Source can be a single object or an array of objects
+export interface SourceData {
+  raw: RawData;
+  file: string;
+}
+
 export interface IndicatorRecord {
   time: string;
   value?: number;
-  source: {
-    raw: RawData;
-    file: string;
-  };
+  type?: string;
+  source: SourceData | SourceData[];
   oyster_id: number;
 }
 
@@ -34,6 +40,17 @@ interface IndicatorResultProps {
   data: IndicatorData | null;
   title: string;
 }
+
+// Helper function to format numbers with up to 4 decimal places, removing trailing zeros
+const formatNumber = (value: number | null | undefined): string => {
+  if (value === null || value === undefined) return 'N/A';
+
+  // Format with 4 decimal places
+  const formatted = value.toFixed(4);
+
+  // Remove trailing zeros and decimal point if needed
+  return formatted.replace(/\.?0+$/, '');
+};
 
 // Helper function to render raw data in a flexible way
 const renderRawData = (raw: RawData): JSX.Element => {
@@ -70,32 +87,85 @@ const renderRawData = (raw: RawData): JSX.Element => {
   );
 };
 
+// Helper function to render source data (single or array)
+const renderSourceData = (source: SourceData | SourceData[]): JSX.Element => {
+  if (Array.isArray(source)) {
+    return (
+      <div className="space-y-2">
+        <p className="font-medium">Multiple Sources ({source.length}):</p>
+        <div className="space-y-3">
+          {source.map((src, index) => (
+            <div key={index} className="pl-2 border-l-2 border-muted-foreground">
+              <p className="text-sm truncate">File: {src.file}</p>
+              <div className="mt-1 bg-background p-2 rounded-md">
+                <p className="font-medium mb-1 text-xs">Raw Data:</p>
+                {renderRawData(src.raw)}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Single source object
+  return (
+    <div>
+      <p className="truncate">Source: {source.file}</p>
+      <div className="mt-2 bg-background p-2 rounded-md">
+        <p className="font-medium mb-1">Raw Data:</p>
+        {renderRawData(source.raw)}
+      </div>
+    </div>
+  );
+};
+
 const IndicatorResult: FC<IndicatorResultProps> = ({ data, title }) => {
+  const [showConfig, setShowConfig] = useState(false);
+
   if (!data) {
     return <div className="text-muted-foreground">No data available</div>;
   }
 
   return (
-    <div className="grid grid-cols-12 gap-4">
-      {/* Config Card - approximately 30% width */}
-      <Card className="col-span-12 md:col-span-4">
-        <CardHeader>
-          <CardTitle>Configuration</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            {Object.entries(data.config).map(([key, value]) => (
-              <div key={key} className="flex justify-between items-center">
-                <span className="font-medium">{key}:</span>
-                <span className="text-muted-foreground">{JSON.stringify(value)}</span>
-              </div>
-            ))}
+    <div className="space-y-4">
+      {/* Config Card - Collapsible */}
+      <Card>
+        <CardHeader className="pb-2 cursor-pointer" onClick={() => setShowConfig(!showConfig)}>
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-base">Configuration</CardTitle>
+            <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+              {showConfig ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </Button>
           </div>
-        </CardContent>
+        </CardHeader>
+        {showConfig && (
+          <CardContent>
+            <div className="space-y-1 text-xs">
+              {Object.entries(data.config).map(([key, value]) => {
+                // Format the key: replace underscores with spaces and convert to lowercase
+                const formattedKey = key.replace(/_/g, ' ').toLowerCase();
+
+                return (
+                  <div key={key} className="flex justify-between items-start gap-2">
+                    <span className="font-medium capitalize">{formattedKey}:</span>
+                    <span className="text-muted-foreground text-right break-words max-w-[60%]">
+                      {JSON.stringify(value)}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </CardContent>
+        )}
       </Card>
 
-      {/* Values Details Card - approximately 70% width */}
-      <Card className="col-span-12 md:col-span-8">
+      {/* Values Details Card */}
+      <Card>
         <CardHeader>
           <CardTitle>{title} Details</CardTitle>
         </CardHeader>
@@ -137,19 +207,18 @@ const IndicatorResult: FC<IndicatorResultProps> = ({ data, title }) => {
                         </span>
                         {record.value !== undefined && (
                           <Badge className={cn('font-bold bg-black text-white')}>
-                            Value:{' '}
-                            {typeof record.value === 'number'
-                              ? record.value.toFixed(2)
-                              : record.value}
+                            Value: {formatNumber(record.value)}
                           </Badge>
                         )}
                       </div>
+                      {record.type && (
+                        <div className="mb-2">
+                          <span className="font-medium">Type: </span>
+                          <span className="text-muted-foreground">{record.type}</span>
+                        </div>
+                      )}
                       <div className="text-sm text-muted-foreground mb-2">
-                        <p className="truncate">Source: {record.source.file}</p>
-                      </div>
-                      <div className="text-sm bg-background p-2 rounded-md">
-                        <p className="font-medium mb-1">Raw Data:</p>
-                        {renderRawData(record.source.raw)}
+                        {renderSourceData(record.source)}
                       </div>
                     </div>
                   ))}
