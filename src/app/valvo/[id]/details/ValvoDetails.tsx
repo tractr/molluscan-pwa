@@ -3,14 +3,15 @@
 import { FC, useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { format, isAfter, startOfDay } from 'date-fns';
-import { Calendar as CalendarIcon } from 'lucide-react';
+import { format, isAfter, startOfDay, addDays, subDays } from 'date-fns';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import createClient from '@/lib/supabase/client';
 import IndicatorResult, { IndicatorData } from '@/components/indicators/IndicatorResult';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import IndicatorConfiguration from '@/components/indicators/IndicatorConfiguration';
 
 interface ValvoDetailsProps {
   valvoId: string;
@@ -26,6 +27,7 @@ interface NoDataIndicator {
 interface GeneralIndicatorData {
   value: number;
   indicator: number;
+  config?: Record<string, unknown>;
 }
 
 // Union type for possible indicator data types
@@ -143,7 +145,7 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
   const [loading, setLoading] = useState(false);
   const [generalIndicator, setGeneralIndicator] = useState<GeneralIndicator | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [selectedIndicator, setSelectedIndicator] = useState<IndicatorType>('mortality');
+  const [selectedIndicator, setSelectedIndicator] = useState<IndicatorType>('agitation');
 
   const fetchIndicatorData = async (selectedDate: Date) => {
     setLoading(true);
@@ -247,22 +249,33 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
     generalIndicatorData.indicator === null ||
     generalIndicatorData.indicator === undefined;
 
+  const goToPreviousDay = () => {
+    setDate(prevDate => subDays(prevDate, 1));
+  };
+
+  const goToNextDay = () => {
+    const nextDay = addDays(date, 1);
+    if (!disableFutureDates(nextDay)) {
+      setDate(nextDay);
+    }
+  };
+
   return (
     <div className="p-4">
-      <div className="mb-6">
-        <div className="w-[200px]">
-          <label className="text-sm font-medium block mb-2">Date</label>
+      <div className="mb-6 flex items-center justify-between bg-background shadow-sm rounded-lg p-4">
+        <Button variant="outline" size="icon" onClick={goToPreviousDay} className="h-8 w-8">
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+
+        <div className="flex items-center gap-2">
           <Popover>
             <PopoverTrigger asChild>
               <Button
-                variant="outline"
-                className={cn(
-                  'w-full justify-start text-left font-normal',
-                  !date && 'text-muted-foreground'
-                )}
+                variant="ghost"
+                className={cn('font-semibold text-lg', !date && 'text-muted-foreground')}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-                {date ? format(date, 'yyyy-MM-dd') : <span>Pick a date</span>}
+                {date ? format(date, 'MMMM d, yyyy') : <span>Pick a date</span>}
               </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">
@@ -276,6 +289,16 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
             </PopoverContent>
           </Popover>
         </div>
+
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={goToNextDay}
+          disabled={disableFutureDates(addDays(date, 1))}
+          className="h-8 w-8"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
       </div>
 
       <div>
@@ -283,82 +306,106 @@ const ValvoDetails: FC<ValvoDetailsProps> = ({ valvoId }) => {
         {error && <p className="text-red-500">{error}</p>}
 
         {generalIndicator && !loading && !error && (
-          <div className="grid grid-cols-12 gap-6">
-            {/* Left Menu */}
-            <div className="col-span-12 md:col-span-3">
-              {/* General Indicator Card */}
-              {generalIndicatorData && (
-                <Card className="mb-4">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium">General Indicator</h3>
-                      <div
-                        className={cn(
-                          'px-3 py-1 rounded-full font-bold text-lg',
-                          isGeneralIndicatorNA
-                            ? 'bg-gray-300 text-gray-800'
-                            : getGeneralIndicatorColor(generalIndicatorData.indicator)
-                        )}
-                      >
-                        {isGeneralIndicatorNA ? 'N/A' : formatNumber(generalIndicatorData.value)}
+          <div className="space-y-6">
+            {/* General Indicator Card */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle>General Indicator</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-col space-y-4">
+                  {/* General Indicator Value */}
+                  <div className="flex items-center justify-center">
+                    <div
+                      className={cn(
+                        'px-4 py-2 rounded-full font-bold text-xl',
+                        isGeneralIndicatorNA
+                          ? 'bg-gray-300 text-gray-800'
+                          : getGeneralIndicatorColor(generalIndicatorData?.indicator)
+                      )}
+                    >
+                      {isGeneralIndicatorNA ? 'N/A' : formatNumber(generalIndicatorData?.value)}
+                    </div>
+                  </div>
+
+                  {/* General Indicator Config */}
+                  {generalIndicator && generalIndicator.general && (
+                    <IndicatorConfiguration
+                      config={generalIndicator.general.config}
+                      title="Configuration"
+                      defaultOpen={false}
+                    />
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Indicators Card */}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle>Indicators</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-12 gap-6">
+                  {/* Left Menu */}
+                  <div className="col-span-12 md:col-span-3">
+                    <div className="bg-muted rounded-md p-3">
+                      <div className="space-y-2">
+                        {INDICATORS.map(indicator => {
+                          const indicatorData = getIndicatorValue(indicator.id as IndicatorType);
+                          const badgeColor = getIndicatorColor(indicatorData.indicator);
+                          const noData = hasNoData(indicator.id as IndicatorType);
+
+                          return (
+                            <Button
+                              key={indicator.id}
+                              variant={selectedIndicator === indicator.id ? 'default' : 'ghost'}
+                              className={cn(
+                                'w-full justify-start text-left py-3',
+                                selectedIndicator === indicator.id ? '' : 'text-muted-foreground'
+                              )}
+                              onClick={() => handleIndicatorSelect(indicator.id as IndicatorType)}
+                            >
+                              <Badge className={cn('mr-2 font-bold', badgeColor)} variant="outline">
+                                {noData || indicatorData.value === null
+                                  ? 'N/A'
+                                  : formatNumber(indicatorData.value)}
+                              </Badge>
+                              <span className="flex-1">{indicator.label}</span>
+                            </Button>
+                          );
+                        })}
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              )}
+                  </div>
 
-              <div className="bg-card rounded-md border p-3">
-                <h3 className="font-medium text-sm mb-3 px-2">Indicators</h3>
-                <div className="space-y-2">
-                  {INDICATORS.map(indicator => {
-                    const indicatorData = getIndicatorValue(indicator.id as IndicatorType);
-                    const badgeColor = getIndicatorColor(indicatorData.indicator);
-                    const noData = hasNoData(indicator.id as IndicatorType);
-
-                    return (
-                      <Button
-                        key={indicator.id}
-                        variant={selectedIndicator === indicator.id ? 'default' : 'ghost'}
-                        className={cn(
-                          'w-full justify-start text-left py-3',
-                          selectedIndicator === indicator.id ? '' : 'text-muted-foreground'
-                        )}
-                        onClick={() => handleIndicatorSelect(indicator.id as IndicatorType)}
-                      >
-                        <Badge className={cn('mr-2 font-bold', badgeColor)} variant="outline">
-                          {noData || indicatorData.value === null
-                            ? 'N/A'
-                            : formatNumber(indicatorData.value)}
-                        </Badge>
-                        <span className="flex-1">{indicator.label}</span>
-                      </Button>
-                    );
-                  })}
+                  {/* Indicator Result */}
+                  <div className="col-span-12 md:col-span-9">
+                    {currentIndicatorHasNoData ? (
+                      <div className="text-muted-foreground p-4 bg-muted rounded-md">
+                        No data available for{' '}
+                        {INDICATORS.find(i => i.id === selectedIndicator)?.label ||
+                          selectedIndicator}
+                      </div>
+                    ) : isIndicatorData(currentIndicatorData) ? (
+                      <IndicatorResult
+                        data={currentIndicatorData}
+                        title={
+                          INDICATORS.find(i => i.id === selectedIndicator)?.label ||
+                          selectedIndicator
+                        }
+                      />
+                    ) : (
+                      <div className="text-muted-foreground p-4 bg-muted rounded-md">
+                        No data available for{' '}
+                        {INDICATORS.find(i => i.id === selectedIndicator)?.label ||
+                          selectedIndicator}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            {/* Indicator Result */}
-            <div className="col-span-12 md:col-span-9">
-              {currentIndicatorHasNoData ? (
-                <div className="text-muted-foreground p-4 bg-card rounded-md border">
-                  No data available for{' '}
-                  {INDICATORS.find(i => i.id === selectedIndicator)?.label || selectedIndicator}
-                </div>
-              ) : isIndicatorData(currentIndicatorData) ? (
-                <IndicatorResult
-                  data={currentIndicatorData}
-                  title={
-                    INDICATORS.find(i => i.id === selectedIndicator)?.label || selectedIndicator
-                  }
-                />
-              ) : (
-                <div className="text-muted-foreground p-4 bg-card rounded-md border">
-                  No data available for{' '}
-                  {INDICATORS.find(i => i.id === selectedIndicator)?.label || selectedIndicator}
-                </div>
-              )}
-            </div>
+              </CardContent>
+            </Card>
           </div>
         )}
       </div>
