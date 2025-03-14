@@ -711,18 +711,21 @@ export type Database = {
         Row: {
           agitation: number;
           file: string;
+          raw: Json;
           time: string;
           valvo: string;
         };
         Insert: {
           agitation: number;
           file: string;
+          raw: Json;
           time: string;
           valvo: string;
         };
         Update: {
           agitation?: number;
           file?: string;
+          raw?: Json;
           time?: string;
           valvo?: string;
         };
@@ -733,55 +736,6 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: 'file';
             referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'agitation_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'agitation_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'agitation_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'agitation_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'agitation_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'agitation_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'agitation_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
           },
           {
             foreignKeyName: 'agitation_valvo_fkey';
@@ -817,6 +771,7 @@ export type Database = {
         Row: {
           created_at: string;
           data_type: Database['public']['Enums']['DataType'];
+          errors: Json | null;
           filepath: string;
           folder_date: string | null;
           id: string;
@@ -826,6 +781,7 @@ export type Database = {
         Insert: {
           created_at?: string;
           data_type: Database['public']['Enums']['DataType'];
+          errors?: Json | null;
           filepath: string;
           folder_date?: string | null;
           id?: string;
@@ -835,6 +791,7 @@ export type Database = {
         Update: {
           created_at?: string;
           data_type?: Database['public']['Enums']['DataType'];
+          errors?: Json | null;
           filepath?: string;
           folder_date?: string | null;
           id?: string;
@@ -882,18 +839,21 @@ export type Database = {
         Row: {
           file: string;
           growth: number;
+          raw: Json;
           time: string;
           valvo: string;
         };
         Insert: {
           file: string;
           growth: number;
+          raw: Json;
           time: string;
           valvo: string;
         };
         Update: {
           file?: string;
           growth?: number;
+          raw?: Json;
           time?: string;
           valvo?: string;
         };
@@ -904,55 +864,6 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: 'file';
             referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'growth_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'growth_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'growth_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'growth_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'growth_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'growth_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'growth_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
           },
           {
             foreignKeyName: 'growth_valvo_fkey';
@@ -997,18 +908,21 @@ export type Database = {
         Row: {
           file: string;
           max_amplitude: number;
+          raw: Json;
           time: string;
           valvo: string;
         };
         Insert: {
           file: string;
           max_amplitude: number;
+          raw: Json;
           time: string;
           valvo: string;
         };
         Update: {
           file?: string;
           max_amplitude?: number;
+          raw?: Json;
           time?: string;
           valvo?: string;
         };
@@ -1019,55 +933,6 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: 'file';
             referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'max_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'max_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'max_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'max_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'max_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'max_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'max_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
           },
           {
             foreignKeyName: 'max_amplitude_valvo_fkey';
@@ -1112,55 +977,6 @@ export type Database = {
             foreignKeyName: 'mortality_valvo_fkey';
             columns: ['valvo'];
             isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'mortality_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'mortality_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'mortality_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'mortality_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'mortality_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'mortality_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'mortality_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
             referencedRelation: 'valvo';
             referencedColumns: ['id'];
           }
@@ -1170,6 +986,7 @@ export type Database = {
         Row: {
           file: string;
           night_and_day: number;
+          raw: Json;
           tidal: number;
           time: string;
           valvo: string;
@@ -1177,6 +994,7 @@ export type Database = {
         Insert: {
           file: string;
           night_and_day: number;
+          raw: Json;
           tidal: number;
           time: string;
           valvo: string;
@@ -1184,6 +1002,7 @@ export type Database = {
         Update: {
           file?: string;
           night_and_day?: number;
+          raw?: Json;
           tidal?: number;
           time?: string;
           valvo?: string;
@@ -1195,55 +1014,6 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: 'file';
             referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'rhythm_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'rhythm_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'rhythm_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'rhythm_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'rhythm_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'rhythm_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'rhythm_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
           },
           {
             foreignKeyName: 'rhythm_valvo_fkey';
@@ -1295,55 +1065,6 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: 'site';
             referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'site_valvo_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'site_valvo_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'site_valvo_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'site_valvo_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'site_valvo_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'site_valvo_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'site_valvo_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
           },
           {
             foreignKeyName: 'site_valvo_valvo_fkey';
@@ -1415,55 +1136,6 @@ export type Database = {
             foreignKeyName: 'source_valvo_fkey';
             columns: ['valvo'];
             isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'source_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'source_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'source_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'source_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'source_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'source_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'source_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
             referencedRelation: 'valvo';
             referencedColumns: ['id'];
           }
@@ -1472,18 +1144,21 @@ export type Database = {
       spawning: {
         Row: {
           file: string;
+          raw: Json;
           spawn: number;
           time: string;
           valvo: string;
         };
         Insert: {
           file: string;
+          raw: Json;
           spawn: number;
           time: string;
           valvo: string;
         };
         Update: {
           file?: string;
+          raw?: Json;
           spawn?: number;
           time?: string;
           valvo?: string;
@@ -1495,55 +1170,6 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: 'file';
             referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'spawning_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'spawning_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'spawning_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'spawning_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'spawning_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'spawning_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'spawning_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
           },
           {
             foreignKeyName: 'spawning_valvo_fkey';
@@ -1609,6 +1235,7 @@ export type Database = {
         Row: {
           closure_duration: number;
           file: string;
+          raw: Json;
           time: string;
           valvo: string;
           vcd_se: number | null;
@@ -1616,6 +1243,7 @@ export type Database = {
         Insert: {
           closure_duration: number;
           file: string;
+          raw: Json;
           time: string;
           valvo: string;
           vcd_se?: number | null;
@@ -1623,6 +1251,7 @@ export type Database = {
         Update: {
           closure_duration?: number;
           file?: string;
+          raw?: Json;
           time?: string;
           valvo?: string;
           vcd_se?: number | null;
@@ -1639,55 +1268,6 @@ export type Database = {
             foreignKeyName: 'valve_closing_duration_valvo_fkey';
             columns: ['valvo'];
             isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_closing_duration_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_closing_duration_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_closing_duration_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_closing_duration_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_closing_duration_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_closing_duration_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_closing_duration_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
             referencedRelation: 'valvo';
             referencedColumns: ['id'];
           }
@@ -1697,6 +1277,7 @@ export type Database = {
         Row: {
           amplitude: number;
           file: string;
+          raw: Json;
           time: string;
           valvo: string;
           voa_se: number | null;
@@ -1704,6 +1285,7 @@ export type Database = {
         Insert: {
           amplitude: number;
           file: string;
+          raw: Json;
           time: string;
           valvo: string;
           voa_se?: number | null;
@@ -1711,6 +1293,7 @@ export type Database = {
         Update: {
           amplitude?: number;
           file?: string;
+          raw?: Json;
           time?: string;
           valvo?: string;
           voa_se?: number | null;
@@ -1727,55 +1310,6 @@ export type Database = {
             foreignKeyName: 'valve_opening_amplitude_valvo_fkey';
             columns: ['valvo'];
             isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_opening_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_opening_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_opening_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_opening_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_opening_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_opening_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valve_opening_amplitude_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
             referencedRelation: 'valvo';
             referencedColumns: ['id'];
           }
@@ -1783,181 +1317,34 @@ export type Database = {
       };
       valvo: {
         Row: {
-          agitation_during_opening_period_weight: number;
-          agitation_green_threshold: number;
-          agitation_number_of_exceedences_threshold: number;
-          agitation_orange_threshold: number;
-          agitation_red_threshold: number;
-          agitation_weight: number;
-          agitation_yellow_threshold: number;
           city: string | null;
+          code: string | null;
           created_at: string;
           description: string | null;
-          general_green_threshold: number;
-          general_orange_threshold: number;
-          general_red_threshold: number;
-          general_yellow_threshold: number;
-          growth_green_threshold: number;
-          growth_orange_threshold: number;
-          growth_red_threshold: number;
-          growth_threshold: number;
-          growth_weight: number;
-          growth_yellow_threshold: number;
           id: string;
           location: unknown | null;
-          max_amplitude_green_threshold: number;
-          max_amplitude_orange_threshold: number;
-          max_amplitude_red_threshold: number;
-          max_amplitude_threshold: number;
-          max_amplitude_weight: number;
-          max_amplitude_yellow_threshold: number;
-          mortality_green_threshold: number;
-          mortality_orange_threshold: number;
-          mortality_red_threshold: number;
-          mortality_weight: number;
-          mortality_yellow_threshold: number;
           name: string;
-          night_and_day_rhythm_green_threshold: number;
-          night_and_day_rhythm_orange_threshold: number;
-          night_and_day_rhythm_red_threshold: number;
-          night_and_day_rhythm_weight: number;
-          night_and_day_rhythm_yellow_threshold: number;
           public: boolean;
-          spawning_pink_threshold: number;
-          tidal_rhythm_green_threshold: number;
-          tidal_rhythm_orange_threshold: number;
-          tidal_rhythm_red_threshold: number;
-          tidal_rhythm_weight: number;
-          tidal_rhythm_yellow_threshold: number;
-          valve_closing_duration_green_threshold: number;
-          valve_closing_duration_orange_threshold: number;
-          valve_closing_duration_red_threshold: number;
-          valve_closing_duration_weight: number;
-          valve_closing_duration_yellow_threshold: number;
-          valve_during_opening_period_weight: number;
-          valve_opening_amplitude_green_threshold: number;
-          valve_opening_amplitude_orange_threshold: number;
-          valve_opening_amplitude_red_threshold: number;
-          valve_opening_amplitude_weight: number;
-          valve_opening_amplitude_yellow_threshold: number;
         };
         Insert: {
-          agitation_during_opening_period_weight?: number;
-          agitation_green_threshold?: number;
-          agitation_number_of_exceedences_threshold?: number;
-          agitation_orange_threshold?: number;
-          agitation_red_threshold?: number;
-          agitation_weight?: number;
-          agitation_yellow_threshold?: number;
           city?: string | null;
+          code?: string | null;
           created_at?: string;
           description?: string | null;
-          general_green_threshold?: number;
-          general_orange_threshold?: number;
-          general_red_threshold?: number;
-          general_yellow_threshold?: number;
-          growth_green_threshold?: number;
-          growth_orange_threshold?: number;
-          growth_red_threshold?: number;
-          growth_threshold?: number;
-          growth_weight?: number;
-          growth_yellow_threshold?: number;
           id?: string;
           location?: unknown | null;
-          max_amplitude_green_threshold?: number;
-          max_amplitude_orange_threshold?: number;
-          max_amplitude_red_threshold?: number;
-          max_amplitude_threshold?: number;
-          max_amplitude_weight?: number;
-          max_amplitude_yellow_threshold?: number;
-          mortality_green_threshold?: number;
-          mortality_orange_threshold?: number;
-          mortality_red_threshold?: number;
-          mortality_weight?: number;
-          mortality_yellow_threshold?: number;
           name?: string;
-          night_and_day_rhythm_green_threshold?: number;
-          night_and_day_rhythm_orange_threshold?: number;
-          night_and_day_rhythm_red_threshold?: number;
-          night_and_day_rhythm_weight?: number;
-          night_and_day_rhythm_yellow_threshold?: number;
           public?: boolean;
-          spawning_pink_threshold?: number;
-          tidal_rhythm_green_threshold?: number;
-          tidal_rhythm_orange_threshold?: number;
-          tidal_rhythm_red_threshold?: number;
-          tidal_rhythm_weight?: number;
-          tidal_rhythm_yellow_threshold?: number;
-          valve_closing_duration_green_threshold?: number;
-          valve_closing_duration_orange_threshold?: number;
-          valve_closing_duration_red_threshold?: number;
-          valve_closing_duration_weight?: number;
-          valve_closing_duration_yellow_threshold?: number;
-          valve_during_opening_period_weight?: number;
-          valve_opening_amplitude_green_threshold?: number;
-          valve_opening_amplitude_orange_threshold?: number;
-          valve_opening_amplitude_red_threshold?: number;
-          valve_opening_amplitude_weight?: number;
-          valve_opening_amplitude_yellow_threshold?: number;
         };
         Update: {
-          agitation_during_opening_period_weight?: number;
-          agitation_green_threshold?: number;
-          agitation_number_of_exceedences_threshold?: number;
-          agitation_orange_threshold?: number;
-          agitation_red_threshold?: number;
-          agitation_weight?: number;
-          agitation_yellow_threshold?: number;
           city?: string | null;
+          code?: string | null;
           created_at?: string;
           description?: string | null;
-          general_green_threshold?: number;
-          general_orange_threshold?: number;
-          general_red_threshold?: number;
-          general_yellow_threshold?: number;
-          growth_green_threshold?: number;
-          growth_orange_threshold?: number;
-          growth_red_threshold?: number;
-          growth_threshold?: number;
-          growth_weight?: number;
-          growth_yellow_threshold?: number;
           id?: string;
           location?: unknown | null;
-          max_amplitude_green_threshold?: number;
-          max_amplitude_orange_threshold?: number;
-          max_amplitude_red_threshold?: number;
-          max_amplitude_threshold?: number;
-          max_amplitude_weight?: number;
-          max_amplitude_yellow_threshold?: number;
-          mortality_green_threshold?: number;
-          mortality_orange_threshold?: number;
-          mortality_red_threshold?: number;
-          mortality_weight?: number;
-          mortality_yellow_threshold?: number;
           name?: string;
-          night_and_day_rhythm_green_threshold?: number;
-          night_and_day_rhythm_orange_threshold?: number;
-          night_and_day_rhythm_red_threshold?: number;
-          night_and_day_rhythm_weight?: number;
-          night_and_day_rhythm_yellow_threshold?: number;
           public?: boolean;
-          spawning_pink_threshold?: number;
-          tidal_rhythm_green_threshold?: number;
-          tidal_rhythm_orange_threshold?: number;
-          tidal_rhythm_red_threshold?: number;
-          tidal_rhythm_weight?: number;
-          tidal_rhythm_yellow_threshold?: number;
-          valve_closing_duration_green_threshold?: number;
-          valve_closing_duration_orange_threshold?: number;
-          valve_closing_duration_red_threshold?: number;
-          valve_closing_duration_weight?: number;
-          valve_closing_duration_yellow_threshold?: number;
-          valve_during_opening_period_weight?: number;
-          valve_opening_amplitude_green_threshold?: number;
-          valve_opening_amplitude_orange_threshold?: number;
-          valve_opening_amplitude_red_threshold?: number;
-          valve_opening_amplitude_weight?: number;
-          valve_opening_amplitude_yellow_threshold?: number;
         };
         Relationships: [
           {
@@ -1996,55 +1383,6 @@ export type Database = {
             foreignKeyName: 'valvo_config_valvo_fkey';
             columns: ['valvo'];
             isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_config_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_config_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_config_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_config_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_config_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_config_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_config_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
             referencedRelation: 'valvo';
             referencedColumns: ['id'];
           }
@@ -2055,7 +1393,8 @@ export type Database = {
           created_at: string;
           description: string;
           id: string;
-          image: string;
+          image_bucket: string;
+          image_path: string;
           sort: number | null;
           valvo: string;
         };
@@ -2063,7 +1402,8 @@ export type Database = {
           created_at?: string;
           description: string;
           id?: string;
-          image: string;
+          image_bucket: string;
+          image_path: string;
           sort?: number | null;
           valvo: string;
         };
@@ -2071,60 +1411,12 @@ export type Database = {
           created_at?: string;
           description?: string;
           id?: string;
-          image?: string;
+          image_bucket?: string;
+          image_path?: string;
           sort?: number | null;
           valvo?: string;
         };
         Relationships: [
-          {
-            foreignKeyName: 'valvo_image_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_image_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_image_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_image_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_image_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_image_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'valvo_image_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
-          },
           {
             foreignKeyName: 'valvo_image_valvo_fkey';
             columns: ['valvo'];
@@ -2165,55 +1457,6 @@ export type Database = {
             foreignKeyName: 'public_water_temperature_valvo_fkey';
             columns: ['valvo'];
             isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo'];
-            isOneToOne: false;
             referencedRelation: 'valvo';
             referencedColumns: ['id'];
           }
@@ -2221,118 +1464,6 @@ export type Database = {
       };
     };
     Views: {
-      agitation_indicator: {
-        Row: {
-          day: string | null;
-          indicator: number | null;
-          indicator_for_general: number | null;
-          number_of_exceedences_threshold: number | null;
-          total_mt_blue_threshold: number | null;
-          total_mt_green_threshold: number | null;
-          total_mt_orange_threshold: number | null;
-          total_mt_red_threshold: number | null;
-          total_mt_yellow_threshold: number | null;
-          value: number | null;
-          valvo_id: string | null;
-          weight: number | null;
-        };
-        Relationships: [];
-      };
-      growth_indicator: {
-        Row: {
-          day: string | null;
-          green_threshold: number | null;
-          indicator: number | null;
-          indicator_for_general: number | null;
-          orange_threshold: number | null;
-          red_threshold: number | null;
-          total_mt_blue_threshold: number | null;
-          total_mt_green_threshold: number | null;
-          total_mt_orange_threshold: number | null;
-          total_mt_red_threshold: number | null;
-          total_mt_yellow_threshold: number | null;
-          value: number | null;
-          valvo_id: string | null;
-          weight: number | null;
-          yellow_threshold: number | null;
-        };
-        Relationships: [];
-      };
-      mortality_indicator: {
-        Row: {
-          day: string | null;
-          green_threshold: number | null;
-          indicator: number | null;
-          indicator_for_general: number | null;
-          orange_threshold: number | null;
-          red_threshold: number | null;
-          value: number | null;
-          valvo_id: string | null;
-          weight: number | null;
-          yellow_threshold: number | null;
-        };
-        Relationships: [];
-      };
-      night_and_day_rhythm_indicator: {
-        Row: {
-          day: string | null;
-          green_threshold: number | null;
-          indicator: number | null;
-          indicator_for_general: number | null;
-          orange_threshold: number | null;
-          red_threshold: number | null;
-          value: number | null;
-          valvo_id: string | null;
-          weight: number | null;
-          yellow_threshold: number | null;
-        };
-        Relationships: [];
-      };
-      tidal_rhythm_indicator: {
-        Row: {
-          day: string | null;
-          green_threshold: number | null;
-          indicator: number | null;
-          indicator_for_general: number | null;
-          orange_threshold: number | null;
-          red_threshold: number | null;
-          value: number | null;
-          valvo_id: string | null;
-          weight: number | null;
-          yellow_threshold: number | null;
-        };
-        Relationships: [];
-      };
-      valve_closing_duration_indicator: {
-        Row: {
-          day: string | null;
-          green_threshold: number | null;
-          indicator: number | null;
-          indicator_for_general: number | null;
-          orange_threshold: number | null;
-          red_threshold: number | null;
-          value: number | null;
-          valvo_id: string | null;
-          weight: number | null;
-          yellow_threshold: number | null;
-        };
-        Relationships: [];
-      };
-      valve_opening_amplitude_indicator: {
-        Row: {
-          day: string | null;
-          green_threshold: number | null;
-          indicator: number | null;
-          indicator_for_general: number | null;
-          orange_threshold: number | null;
-          red_threshold: number | null;
-          value: number | null;
-          valvo_id: string | null;
-          weight: number | null;
-          yellow_threshold: number | null;
-        };
-        Relationships: [];
-      };
       valvo_geography: {
         Row: {
           feature: Json | null;
@@ -2356,55 +1487,6 @@ export type Database = {
             foreignKeyName: 'public_water_temperature_valvo_fkey';
             columns: ['valvo_id'];
             isOneToOne: false;
-            referencedRelation: 'agitation_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo_id'];
-            isOneToOne: false;
-            referencedRelation: 'growth_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo_id'];
-            isOneToOne: false;
-            referencedRelation: 'mortality_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo_id'];
-            isOneToOne: false;
-            referencedRelation: 'night_and_day_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo_id'];
-            isOneToOne: false;
-            referencedRelation: 'tidal_rhythm_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo_id'];
-            isOneToOne: false;
-            referencedRelation: 'valve_closing_duration_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo_id'];
-            isOneToOne: false;
-            referencedRelation: 'valve_opening_amplitude_indicator';
-            referencedColumns: ['valvo_id'];
-          },
-          {
-            foreignKeyName: 'public_water_temperature_valvo_fkey';
-            columns: ['valvo_id'];
-            isOneToOne: false;
             referencedRelation: 'valvo';
             referencedColumns: ['id'];
           }
@@ -2419,26 +1501,95 @@ export type Database = {
         };
         Returns: boolean;
       };
+      count_agitation_during_opening_exceedences: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+          p_threshold: number;
+        };
+        Returns: number;
+      };
+      count_agitation_exceedences: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+          p_threshold: number;
+        };
+        Returns: number;
+      };
+      get_agitation_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
+      };
+      get_agitation_during_opening_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
+      };
+      get_agitation_during_opening_in_date_range: {
+        Args: {
+          p_valvo_id: string;
+          p_start_date: string;
+          p_end_date: string;
+        };
+        Returns: {
+          valvo: string;
+          timestamp_value: string;
+          agitation_during_opening: number;
+          agitation: number;
+          amplitude: number;
+          agitation_raw: Json;
+          amplitude_raw: Json;
+          agitation_file: string;
+          amplitude_file: string;
+        }[];
+      };
       get_agitation_during_opening_period_indicator: {
         Args: {
-          start_date: string;
-          period_of_time: number;
-          valvo_id: string;
+          p_start_date: string;
+          p_period_of_time: number;
+          p_valvo_id: string;
+          p_config?: Json;
         };
         Returns: {
           day: string;
           value: number;
-          total_mt_red_threshold: number;
-          total_mt_orange_threshold: number;
-          total_mt_yellow_threshold: number;
-          total_mt_green_threshold: number;
-          total_mt_blue_threshold: number;
           indicator: number;
-          agitation_red_threshold: number;
-          agitation_orange_threshold: number;
-          agitation_yellow_threshold: number;
-          agitation_green_threshold: number;
-          agitation_number_of_exceedences_threshold: number;
+          config: Json;
+          details: Json;
+        }[];
+      };
+      get_agitation_during_opening_values: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+        };
+        Returns: {
+          agitation_during_opening_date: string;
+          max_agitation_during_opening: number;
+          agitation_during_opening_details: Json;
+        }[];
+      };
+      get_agitation_in_date_range: {
+        Args: {
+          p_valvo_id: string;
+          p_start_date: string;
+          p_end_date: string;
+        };
+        Returns: {
+          valvo: string;
+          timestamp_value: string;
+          agitation: number;
+          raw: Json;
+          file: string;
         }[];
       };
       get_agitation_indicator: {
@@ -2446,11 +1597,26 @@ export type Database = {
           p_start_date: string;
           p_period_of_time: number;
           p_valvo_id: string;
+          p_config?: Json;
         };
         Returns: {
           day: string;
           value: number;
           indicator: number;
+          config: Json;
+          details: Json;
+        }[];
+      };
+      get_agitation_values: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+        };
+        Returns: {
+          agitation_date: string;
+          max_agitation: number;
+          agitation_details: Json;
         }[];
       };
       get_all_user_accessible_valvo: {
@@ -2485,11 +1651,19 @@ export type Database = {
         };
         Returns: Json;
       };
+      get_general_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
+      };
       get_general_indicator: {
         Args: {
           start_date: string;
           period_of_time: number;
           valvo_id: string;
+          p_config?: Json;
         };
         Returns: Database['public']['CompositeTypes']['general_indicator'][];
       };
@@ -2501,32 +1675,74 @@ export type Database = {
         };
         Returns: Database['public']['CompositeTypes']['general_indicator_light'][];
       };
+      get_growth_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
+      };
       get_growth_indicator: {
         Args: {
           p_start_date: string;
           p_period_of_time: number;
           p_valvo_id: string;
+          p_config?: Json;
         };
         Returns: {
           day: string;
           value: number;
           indicator: number;
+          config: Json;
+          details: Json;
         }[];
+      };
+      get_growth_values: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+          p_max_value_threshold: number;
+        };
+        Returns: {
+          growth_date: string;
+          growth_count: number;
+          growth_details: Json;
+        }[];
+      };
+      get_max_amplitude_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
       };
       get_max_amplitude_indicator: {
         Args: {
-          start_date: string;
-          period_of_time: number;
-          valvo_id: string;
+          p_start_date: string;
+          p_period_of_time: number;
+          p_valvo_id: string;
+          p_config?: Json;
         };
         Returns: {
           day: string;
           value: number;
           indicator: number;
-          max_amplitude_red_threshold: number;
-          max_amplitude_orange_threshold: number;
-          max_amplitude_yellow_threshold: number;
-          max_amplitude_green_threshold: number;
+          config: Json;
+          details: Json;
+        }[];
+      };
+      get_max_amplitude_values: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+          p_min_value_threshold: number;
+        };
+        Returns: {
+          max_amplitude_date: string;
+          max_amplitude_count: number;
+          max_amplitude_details: Json;
         }[];
       };
       get_mortality_config: {
@@ -2548,7 +1764,7 @@ export type Database = {
           value: number;
           indicator: number;
           config: Json;
-          values_details: Json;
+          details: Json;
         }[];
       };
       get_mortality_values: {
@@ -2563,65 +1779,174 @@ export type Database = {
           mortality_details: Json;
         }[];
       };
+      get_night_and_day_rhythm_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
+      };
       get_night_and_day_rhythm_indicator: {
         Args: {
           p_start_date: string;
           p_period_of_time: number;
           p_valvo_id: string;
+          p_config?: Json;
         };
         Returns: {
           day: string;
           value: number;
           indicator: number;
+          config: Json;
+          details: Json;
         }[];
+      };
+      get_night_and_day_rhythm_values: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+        };
+        Returns: {
+          rhythm_date: string;
+          rhythm_value: number;
+          rhythm_details: Json;
+        }[];
+      };
+      get_spawning_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
       };
       get_spawning_indicator: {
         Args: {
-          start_date: string;
-          period_of_time: number;
-          valvo_id: string;
+          p_start_date: string;
+          p_period_of_time: number;
+          p_valvo_id: string;
+          p_config?: Json;
         };
         Returns: {
           day: string;
           value: number;
           indicator: number;
-          spawning_pink_threshold: number;
+          config: Json;
+          details: Json;
         }[];
+      };
+      get_spawning_values: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+        };
+        Returns: {
+          spawn_date: string;
+          spawn_sum: number;
+          spawn_details: Json;
+        }[];
+      };
+      get_tidal_rhythm_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
       };
       get_tidal_rhythm_indicator: {
         Args: {
           p_start_date: string;
           p_period_of_time: number;
           p_valvo_id: string;
+          p_config?: Json;
         };
         Returns: {
           day: string;
           value: number;
           indicator: number;
+          config: Json;
+          details: Json;
         }[];
+      };
+      get_tidal_rhythm_values: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+        };
+        Returns: {
+          rhythm_date: string;
+          rhythm_value: number;
+          rhythm_details: Json;
+        }[];
+      };
+      get_valve_closing_duration_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
       };
       get_valve_closing_duration_indicator: {
         Args: {
           p_start_date: string;
           p_period_of_time: number;
           p_valvo_id: string;
+          p_config?: Json;
         };
         Returns: {
           day: string;
           value: number;
           indicator: number;
+          config: Json;
+          details: Json;
         }[];
+      };
+      get_valve_closing_duration_values: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+        };
+        Returns: {
+          vcd_date: string;
+          vcd_avg: number;
+          vcd_details: Json;
+        }[];
+      };
+      get_valve_opening_amplitude_config: {
+        Args: {
+          p_valvo_id: string;
+          p_override_config?: Json;
+        };
+        Returns: Json;
       };
       get_valve_opening_amplitude_indicator: {
         Args: {
           p_start_date: string;
           p_period_of_time: number;
           p_valvo_id: string;
+          p_config?: Json;
         };
         Returns: {
           day: string;
           value: number;
           indicator: number;
+          config: Json;
+          details: Json;
+        }[];
+      };
+      get_valve_opening_amplitude_values: {
+        Args: {
+          p_valvo_id: string;
+          p_date: string;
+          p_period_of_time: number;
+        };
+        Returns: {
+          amplitude_date: string;
+          amplitude_value: number;
+          amplitude_details: Json;
         }[];
       };
       get_valvo_config_value: {
@@ -2677,6 +2002,17 @@ export type Database = {
         };
         Returns: string;
       };
+      transform_value_to_indicator: {
+        Args: {
+          p_value: number;
+          p_red_threshold: number;
+          p_orange_threshold: number;
+          p_yellow_threshold: number;
+          p_green_threshold: number;
+          p_blue_threshold: number;
+        };
+        Returns: number;
+      };
       webhook_api: {
         Args: {
           arg_method: string;
@@ -2711,7 +2047,40 @@ export type Database = {
         | 'MORTALITY_THRESHOLD_GREEN'
         | 'MORTALITY_THRESHOLD_YELLOW'
         | 'MORTALITY_THRESHOLD_ORANGE'
-        | 'MORTALITY_THRESHOLD_RED';
+        | 'MORTALITY_THRESHOLD_RED'
+        | 'FEED_CONSUMPTION_PERIODE_OF_TIME'
+        | 'FEED_CONSUMPTION_THRESHOLD_GREEN'
+        | 'FEED_CONSUMPTION_THRESHOLD_YELLOW'
+        | 'FEED_CONSUMPTION_THRESHOLD_ORANGE'
+        | 'FEED_CONSUMPTION_THRESHOLD_RED'
+        | 'GROWTH_RATE_PERIODE_OF_TIME'
+        | 'GROWTH_RATE_THRESHOLD_GREEN'
+        | 'GROWTH_RATE_THRESHOLD_YELLOW'
+        | 'GROWTH_RATE_THRESHOLD_ORANGE'
+        | 'GROWTH_RATE_THRESHOLD_RED'
+        | 'WATER_QUALITY_PERIODE_OF_TIME'
+        | 'WATER_QUALITY_THRESHOLD_GREEN'
+        | 'WATER_QUALITY_THRESHOLD_YELLOW'
+        | 'WATER_QUALITY_THRESHOLD_ORANGE'
+        | 'WATER_QUALITY_THRESHOLD_RED'
+        | 'TEMPERATURE_PERIODE_OF_TIME'
+        | 'TEMPERATURE_THRESHOLD_GREEN'
+        | 'TEMPERATURE_THRESHOLD_YELLOW'
+        | 'TEMPERATURE_THRESHOLD_ORANGE'
+        | 'TEMPERATURE_THRESHOLD_RED'
+        | 'OXYGEN_PERIODE_OF_TIME'
+        | 'OXYGEN_THRESHOLD_GREEN'
+        | 'OXYGEN_THRESHOLD_YELLOW'
+        | 'OXYGEN_THRESHOLD_ORANGE'
+        | 'OXYGEN_THRESHOLD_RED'
+        | 'DISEASE_PERIODE_OF_TIME'
+        | 'DISEASE_THRESHOLD_GREEN'
+        | 'DISEASE_THRESHOLD_YELLOW'
+        | 'DISEASE_THRESHOLD_ORANGE'
+        | 'DISEASE_THRESHOLD_RED'
+        | 'DEFAULT_DATE_RANGE'
+        | 'DATA_REFRESH_INTERVAL'
+        | 'ALERT_NOTIFICATION_DELAY';
     };
     CompositeTypes: {
       general_indicator: {

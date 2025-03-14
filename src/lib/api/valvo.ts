@@ -4,9 +4,9 @@ import {
   GeneralIndicator,
   Geometry,
   PostGISGeography,
-  Tables,
   ValvoGeography,
-} from '@/types/database';
+} from '@/types/valvo';
+import { Tables } from '@/types/database';
 
 export type Valvo = Tables<'valvo'>;
 export type ValvoImage = Tables<'valvo_image'> & { url: string | null };

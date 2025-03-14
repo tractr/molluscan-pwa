@@ -7,7 +7,7 @@ import {
   getImagesValvo,
 } from './valvo';
 import { getCities } from './cities';
-import { IndicatorGeneralDetails, ValvoWithIndicator } from '@/types/valvo';
+import { GeneralIndicator, ValvoWithIndicator } from '@/types/valvo';
 import { WeatherData } from '@/types/weather';
 import { getPublicImageUrl } from '../supabase/storage';
 import { env } from '../env';
@@ -100,7 +100,9 @@ export function useValvoWithIndicator(
   selectedDate?: Date,
   periodOfTime: number = 1
 ) {
-  return useQuery<IndicatorGeneralDetails | null>({
+  return useQuery<
+    (GeneralIndicator & { location: { name: string; city: string; description: string } }) | null
+  >({
     queryKey: ['valvoWithIndicator', valvoId, selectedDate?.toISOString(), periodOfTime],
     queryFn: async () => {
       if (!valvoId) return null;

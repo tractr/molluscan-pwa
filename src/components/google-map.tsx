@@ -3,7 +3,7 @@ import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CitySelect } from './city-select';
-import { CityGeography, ValvoGeography } from '@/types/database';
+import { CityGeography, ValvoGeography } from '@/types/valvo';
 import { ValvoCard } from './valvo-card';
 import { env } from '@/lib/env';
 import { ValvoWithIndicator } from '@/types/valvo';
@@ -24,7 +24,7 @@ const GoogleMapComponent = () => {
   // Récupérer la position sauvegardée du localStorage
   const getSavedPosition = (): SavedMapPosition | null => {
     if (typeof window === 'undefined') return null;
-    
+
     try {
       const saved = localStorage.getItem(MAP_STORAGE_KEY);
       return saved ? JSON.parse(saved) : null;
@@ -213,7 +213,7 @@ const GoogleMapComponent = () => {
         valvoId={selectedValvoId || ''}
         valvo={selectedValvoWithIndicator || null}
         open={isValvoCardOpen}
-        onOpenChange={(open) => {
+        onOpenChange={open => {
           setIsValvoCardOpen(open);
           if (!open) setSelectedValvoId(null);
         }}

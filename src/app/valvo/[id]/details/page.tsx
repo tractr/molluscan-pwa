@@ -2,9 +2,9 @@ import { FC } from 'react';
 import ValvoDetails from './ValvoDetails';
 
 interface ValvoDetailsPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const ValvoDetailsPage: FC<ValvoDetailsPageProps> = async ({ params }) => {

@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 import { indicatorColorClasses, useIndicator } from '@/hooks/use-indicator';
 import { cn } from '@/lib/utils';
-import { IndicatorGeneralDetails } from '@/types/valvo';
+import { GeneralIndicator } from '@/types/valvo';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -10,7 +10,9 @@ import { CircleHelp } from 'lucide-react';
 
 interface ValvoCardProps {
   valvoId: string;
-  valvo: IndicatorGeneralDetails | null;
+  valvo:
+    | (GeneralIndicator & { location: { name: string; city: string; description: string } })
+    | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -38,7 +40,7 @@ export function ValvoCard({ valvoId, valvo, open, onOpenChange }: ValvoCardProps
       <DialogContent
         onClick={handleClick}
         hideCloseButton={true}
-        onOpenAutoFocus={(e) => e.preventDefault()}
+        onOpenAutoFocus={e => e.preventDefault()}
         className={cn(
           'max-w-[calc(100%-2rem)] w-[425px] sm:w-[600px] absolute top-auto bottom-10 left-1/2 -translate-x-1/2 h-fit border-white border-2 shadow-2xl backdrop-blur-sm overflow-hidden flex flex-row items-stretch gap-4 md:gap-8 p-0 cursor-pointer hover:shadow-md hover:border-white/70 transition-all duration-300 ease-out',
           indicatorColorClasses[color as keyof typeof indicatorColorClasses]

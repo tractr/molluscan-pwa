@@ -6,7 +6,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { getIndicatorState } from '@/hooks/use-indicator';
-import { GeneralIndicator } from '@/types/database';
+import { GeneralIndicator } from '@/types/valvo';
 import { useMemo } from 'react';
 import {
   BarChart,

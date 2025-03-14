@@ -1,8 +1,8 @@
-import { IndicatorGeneralDetails } from '@/types/valvo';
+import { GeneralIndicator } from '@/types/valvo';
 import { IndicatorCard } from './indicator-card';
 
 interface IndicatorGridProps {
-  indicators: IndicatorGeneralDetails;
+  indicators: GeneralIndicator;
 }
 
 export function IndicatorGrid({ indicators }: IndicatorGridProps) {

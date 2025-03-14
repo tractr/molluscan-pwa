@@ -1,5 +1,5 @@
 import { useCities } from '@/lib/api/queries';
-import { CityGeography } from '@/types/database';
+import { CityGeography } from '@/types/valvo';
 import {
   Select,
   SelectContent,
